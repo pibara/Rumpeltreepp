@@ -53,11 +53,13 @@ namespace rumpelstiltskin {
   struct AbstractServer {
       virtual Node operator[](std::string) const = 0; //Get a Node from a sparse-cap string.
       virtual Node operator()(Node const *, std::string) const= 0; //Get a child node using a weak name and a parent node.
+      virtual Node attenuated(Node const *) const = 0;
   };
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
       Node operator[](std::string) const;
       Node operator()(Node const *, std::string) const;
+      Node attenuated(Node const *) const;
     private:
       std::unique_ptr<AbstractServer> pImpl;
   };
