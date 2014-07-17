@@ -23,51 +23,48 @@
 //DEALINGS IN THE SOFTWARE.
 #ifndef _RUMPELSTILTSKIN_HPP
 #define _RUMPELSTILTSKIN_HPP
+#include <string>
+#include <memory>
+#include <inttypes.h>
 namespace rumpelstiltskin {
   struct Node;
+  struct Server;
+  struct AbstractServer;
   struct AbstractNode {
       virtual std::string rocap() const  = 0;  // Get the sparsecap for read-only access.
       virtual std::string rwcap() const = 0; //Get the sparse-cap for unatenuated access.
       virtual std::string location() const = 0; //Get the relative path where this node would have to be serialized.
-      virtual byte const * const rawkey() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
-      virtual Node const operator[](std::string) const = 0; //Convenience method for getting at child node using weak name.
-      virtual bool attenuated() const = 0; //Query if this node is unatenuated or read only.
+      virtual uint8_t const * const rawkey() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
+      virtual bool is_attenuated() const = 0; //Query if this node is unatenuated or read only.
   };
   struct Node : public AbstractNode {
-      Node(AbstractNode *,Server const &);
-      Node(const Node&) = delete; 
-      Node& T::operator=(const Node&) = delete;
-      Node& T::operator=(Node&) = delete;
-      Node(Node &&);
-      Node& T::operator=(const Node&&);
+      Node(AbstractNode *,AbstractServer const *);
       std::string rocap() const ;
       std::string rwcap() const ;
       std::string location() const ;
-      byte const * const rawkey() const;
-      Node const operator[](std::string) const ; //Convenience method for getting at child node using weak name.
-      bool attenuated() const;
+      uint8_t const * const rawkey() const;
+      Node operator[](std::string) const ; //Convenience method for getting at child node using weak name.
+      bool is_attenuated() const;
+      Node attenuated() const;
     private:
       std::unique_ptr<AbstractNode> pImpl;
-      Server const & sServer;
-  }
+      AbstractServer const *sServer;
+  };
   struct AbstractServer {
       virtual Node operator[](std::string) const = 0; //Get a Node from a sparse-cap string.
-      virtual Node operator()(Node *, std::string) const= 0; //Get a child node using a weak name and a parent node.
+      virtual Node operator()(Node const *, std::string) const= 0; //Get a child node using a weak name and a parent node.
   };
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
-      Server(const Server&) = delete;
-      Server& T::operator=(const Server&) = delete;
-      Server& T::operator=(Server&) = delete;
-      Server(Server &&);
-      Server& T::operator=(const Server&&);
       Node operator[](std::string) const;
-      Node operator()(Node *, std::string) const;
+      Node operator()(Node const *, std::string) const;
     private:
       std::unique_ptr<AbstractServer> pImpl;
   };
   //Function for creating a server object using one or two secrets. Use one secret for local storage or two
   //if you are using any kind of network storage server or service as underlying place to do serialization.
-  Server const create_server(std::string mainsecret, std::string cloudsecret="local");
+  Server create_server(std::string mainsecret, std::string cloudsecret="local");
+  //Turn a password of kinds into a suitable root cap for a tree.
+  std::string pass2rootcap(std::string pass);
 }
 #endif
