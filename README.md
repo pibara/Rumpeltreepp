@@ -12,7 +12,7 @@ Intended usage:
 
   auto rs = rumpelstiltskin::create_server("somelocalsecret");
   
-  auto root = rumpelstiltskin::pick_root("rumpelstiltskin");
+  auto root = rs[rumpelstiltskin::pick_root("rumpelstiltskin")];
 
   auto child = root["bob"];
 
