@@ -37,7 +37,7 @@ namespace rumpelstiltskin {
       std::string rocap() const ;
       std::string rwcap() const ;
       std::string location() const ;
-      byte const * const rawkey();
+      byte const * const rawkey() const;
       Node const operator[](std::string) const ;
       bool attenuated() const;
     private:
