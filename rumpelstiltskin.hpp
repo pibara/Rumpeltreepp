@@ -26,33 +26,35 @@
 namespace rumpelstiltskin {
   struct Node;
   struct AbstractNode {
-      virtual std::string rocap() = 0;  // Get the sparsecap for read-only access.
-      virtual std::string rwcap() = 0; //Get the sparse-cap for unatenuated access.
-      virtual std::string location() = 0; //Get the relative path where this node would have to be serialized.
-      virtual Node operator[](std::string) = 0; //Convenience method for getting at child node using weak name.
-      virtual bool attenuated() = 0; //Query if this node is unatenuated or read only.
+      virtual std::string rocap() const  = 0;  // Get the sparsecap for read-only access.
+      virtual std::string rwcap() const = 0; //Get the sparse-cap for unatenuated access.
+      virtual std::string location() const = 0; //Get the relative path where this node would have to be serialized.
+      virtual byte const * const rawkey() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
+      virtual Node const operator[](std::string) const = 0; //Convenience method for getting at child node using weak name.
+      virtual bool attenuated() const = 0; //Query if this node is unatenuated or read only.
   };
   struct Node : public AbstractServer {
-      std::string rocap();
-      std::string rwcap();
-      std::string location();
-      Node operator[](std::string);
-      bool attenuated();
+      std::string rocap() const ;
+      std::string rwcap() const ;
+      std::string location() const ;
+      byte const * const rawkey();
+      Node const operator[](std::string) const ;
+      bool attenuated() const;
     private:
       std::unique_ptr<AbstractNode> pImpl;
   }
   struct AbstractServer {
-      virtual Node operator[](std::string)  = 0; //Get a Node from a sparse-cap string.
-      virtual Node operator()(Node *, std::string) = 0; //Get a child node using a weak name and a parent node.
+      virtual Node operator[](std::string) const = 0; //Get a Node from a sparse-cap string.
+      virtual Node operator()(Node *, std::string) const= 0; //Get a child node using a weak name and a parent node.
   };
   struct Server: public AbstractServer {
-      Node operator[](std::string);
-      Node operator()(Node *, std::string);
+      Node operator[](std::string) const;
+      Node operator()(Node *, std::string) const;
     private:
       AbstractServer *pImpl;
   };
   //Function for creating a server object using one or two secrets. Use one secret for local storage or two
   //if you are using any kind of network storage server or service as underlying place to do serialization.
-  Server create_server(std::string mainsecret, std::string cloudsecret="local");
+  Server const create_server(std::string mainsecret, std::string cloudsecret="local");
 }
 #endif
