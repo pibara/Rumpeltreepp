@@ -11,7 +11,11 @@ For a description of what this library does, please have a look at these two blo
 Intended usage:
 
   auto rs = rumpelstiltskin::create_server("somelocalsecret");
+  
   auto root = rumpelstiltskin::pick_root("rumpelstiltskin");
+
   auto child = root["bob"];
+
   auto rochild = child();
+
   std::string path = std::string("/someroot/") + rochild.location();
