@@ -8,14 +8,4 @@ For a description of what this library does, please have a look at these two blo
 * http://minorfs.wordpress.com/2014/02/20/rumpelstiltskin-and-his-children/
 * http://minorfs.wordpress.com/2014/03/21/rumpelstiltskin-and-his-children-part-2/
 
-Intended usage:
-
-  auto rs = rumpelstiltskin::create_server("somelocalsecret");
-  
-  auto root = rs[rumpelstiltskin::pick_root("rumpelstiltskin")];
-
-  auto child = root["bob"];
-
-  auto rochild = child();
-
-  std::string path = std::string("/someroot/") + rochild.location();
+Please have a look at test.cpp to view how the API is  coming along so far.
