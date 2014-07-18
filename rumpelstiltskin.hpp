@@ -68,5 +68,9 @@ namespace rumpelstiltskin {
   Server create_server(std::string mainsecret, std::string cloudsecret="local");
   //Turn a password of kinds into a suitable root cap for a tree.
   std::string pass2rootcap(std::string pass);
+  //Get a securely random suitable root cap for a tree.
+  std::string randomrootcap();
+  //Get a securely random secret usable as argument for create_server
+  std::string randomsecret();
 }
 #endif
