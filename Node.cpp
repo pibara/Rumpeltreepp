@@ -2,17 +2,21 @@
 #include <string.h>
 namespace rumpelstiltskin {
   Node::Node(AbstractNode *node,AbstractServer const *server):pImpl(node),sServer(server) {};
-  std::string Node::rocap() const {
-      return pImpl->rocap();
+  std::string Node::unattenuated_cap() const {
+      return pImpl->unattenuated_cap();
   }
-  std::string Node::rwcap() const {
-      return pImpl->rwcap();
+  std::string Node::attenuated_cap() const {
+      return pImpl->attenuated_cap();
   }
-  std::string Node::location() const {
-      return pImpl->location();
+  std::string Node::cap() const { 
+    if (pImpl->is_attenuated()) {
+       return pImpl->attenuated_cap();
+    } else {
+       return pImpl->unattenuated_cap();
+    }
   }
-  uint8_t const * const Node::rawkey() const {
-     return pImpl->rawkey();
+  Storage Node::storage() const {
+      return pImpl->storage();
   }
   Node Node::operator[](std::string s) const {
      return (*sServer)(this,s);

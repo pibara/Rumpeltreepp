@@ -30,31 +30,44 @@ namespace rumpelstiltskin {
   struct Node;
   struct Server;
   struct AbstractServer;
+  struct AbstractStorage {
+     virtual std::string path() const = 0; //Get the relative path where this node would have to be serialized.
+     virtual uint8_t const * const crypto_key() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
+  };
+  struct Storage : public AbstractStorage {
+         Storage(AbstractStorage *);
+         std::string path() const;
+         uint8_t const * const crypto_key() const;
+     private:
+         std::unique_ptr<AbstractStorage> pImpl;
+  };
   struct AbstractNode {
-      virtual std::string rocap() const  = 0;  // Get the sparsecap for read-only access.
-      virtual std::string rwcap() const = 0; //Get the sparse-cap for unatenuated access.
-      virtual std::string location() const = 0; //Get the relative path where this node would have to be serialized.
-      virtual uint8_t const * const rawkey() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
+      virtual std::string attenuated_cap() const  = 0;  // Get the sparsecap for attenuated access.
+      virtual std::string unattenuated_cap() const = 0; //Get the sparse-cap for unatenuated access.
+      virtual Storage storage() const = 0; //Get the relative path where this node would have to be serialized.
       virtual bool is_attenuated() const = 0; //Query if this node is unatenuated or read only.
   };
   struct Node : public AbstractNode {
       Node(AbstractNode *,AbstractServer const *);
-      std::string rocap() const ;
-      std::string rwcap() const ;
-      std::string location() const ;
-      uint8_t const * const rawkey() const;
-      Node operator[](std::string) const ; //Convenience method for getting at child node using weak name.
+      std::string attenuated_cap() const ;
+      std::string unattenuated_cap() const ;
+      std::string cap() const ; //Convenience method for getting the unattenuated cap if available or the attenuated cap if not.
+      Storage storage() const ;
+      Node operator[](std::string) const ; //Convenience method for getting at child node using weak name. Will throw for client side.
       bool is_attenuated() const;
       Node attenuated() const;
     private:
-      std::unique_ptr<AbstractNode> pImpl;
       AbstractServer const *sServer;
+      std::unique_ptr<AbstractNode> pImpl;
   };
+
+  
   struct AbstractServer {
       virtual Node operator[](std::string) const = 0; //Get a Node from a sparse-cap string.
       virtual Node operator()(Node const *, std::string) const= 0; //Get a child node using a weak name and a parent node.
       virtual Node attenuated(Node const *) const = 0;
   };
+
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
       Node operator[](std::string) const;
@@ -63,9 +76,25 @@ namespace rumpelstiltskin {
     private:
       std::unique_ptr<AbstractServer> pImpl;
   };
+
+  struct AbstractClient {
+      virtual std::string attenuate(std::string) =0;
+      virtual Storage storage(std::string) =0;
+  };
+
+  struct Client: public AbstractClient {
+      Client(AbstractClient *);
+      std::string attenuate(std::string);
+      Storage storage(std::string);
+    private:
+      std::unique_ptr<AbstractClient> pImpl;
+  };
+
   //Function for creating a server object using one or two secrets. Use one secret for local storage or two
   //if you are using any kind of network storage server or service as underlying place to do serialization.
   Server create_server(std::string mainsecret, std::string cloudsecret="local");
+  //Create a client object for client side attenuation and decryption.
+  Client create_client(std::string cloudsecret="local");
   //Turn a password of kinds into a suitable root cap for a tree.
   std::string pass2rootcap(std::string pass);
   //Get a securely random suitable root cap for a tree.
