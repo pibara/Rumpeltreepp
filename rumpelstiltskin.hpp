@@ -30,6 +30,9 @@ namespace rumpelstiltskin {
   struct Node;
   struct Server;
   struct AbstractServer;
+  //When the node designated by a sparse cap as used in this library is serialized, a storage object should indicate
+  //where it should be stored and what key should be used to encrypt it. Serialization and encryption are not done by this
+  //library and should be done by the user of the library, primary on the server side of things. 
   struct AbstractStorage {
      virtual std::string path() const = 0; //Get the relative path where this node would have to be serialized.
      virtual uint8_t const * const crypto_key() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
@@ -41,6 +44,7 @@ namespace rumpelstiltskin {
      private:
          std::unique_ptr<AbstractStorage> pImpl;
   };
+  //Node's in the tree
   struct AbstractNode {
       virtual std::string attenuated_cap() const  = 0;  // Get the sparsecap for attenuated access.
       virtual std::string unattenuated_cap() const = 0; //Get the sparse-cap for unatenuated access.
@@ -61,13 +65,12 @@ namespace rumpelstiltskin {
       std::unique_ptr<AbstractNode> pImpl;
   };
 
-  
+  //Server or File-system side.
   struct AbstractServer {
       virtual Node operator[](std::string) const = 0; //Get a Node from a sparse-cap string.
       virtual Node operator()(Node const *, std::string) const= 0; //Get a child node using a weak name and a parent node.
       virtual Node attenuated(Node const *) const = 0;
   };
-
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
       Node operator[](std::string) const;
@@ -76,16 +79,15 @@ namespace rumpelstiltskin {
     private:
       std::unique_ptr<AbstractServer> pImpl;
   };
-
+  // Client or regular process side.
   struct AbstractClient {
       virtual std::string attenuate(std::string) =0;
-      virtual Storage storage(std::string) =0;
+      virtual Storage storage(std::string) =0; //Don't use this for client side en/decryption without an clear security architecture
   };
-
   struct Client: public AbstractClient {
       Client(AbstractClient *);
       std::string attenuate(std::string);
-      Storage storage(std::string);
+      Storage storage(std::string); //Don't use this for client side en/decryption without an clear security architecture
     private:
       std::unique_ptr<AbstractClient> pImpl;
   };
