@@ -10,9 +10,9 @@ namespace rumpelstiltskin {
       Node operator()(Node const *, sec::string) const;
       Node attenuated(Node const *n) const;
     private:
-      void rotostoragekey(std::string rocap,uint8_t *storagekey);
-      sec::string rwtoro(std::string rwcap,uint8_t *storagekey);
-      sec::string rotostoragepath(sec::string rocap);
+      void rotostoragekey(sec::string rocap,uint8_t *storagekey) const;
+      sec::string rwtoro(sec::string rwcap,uint8_t *storagekey) const;
+      sec::string rotostoragepath(sec::string rocap) const;
       sec::string mMainSecret;
       sec::string mCloudSecret;
   };

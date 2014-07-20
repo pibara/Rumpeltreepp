@@ -67,12 +67,12 @@ namespace rumpelstiltskin {
         uint8_t childrwkey[32];
         uint8_t childrokey[32];
         hmac.CalculateDigest(childrwkey,(const unsigned char *)(data.c_str()),data.size());
-        std::string rwcap = sec::string("rw-") + b32encode<CryptoPP::SHA256::DIGESTSIZE>(childrwkey);
+        sec::string rwcap = sec::string("rw-") + b32encode<CryptoPP::SHA256::DIGESTSIZE>(childrwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac2(childrwkey,32);
         sec::string data2= "read-only::nosalt";
         hmac.CalculateDigest(childrokey,(const unsigned char *)(data2.c_str()),data2.size());
-        return Node(new ConcreteNode(std::string("rw-") + b32encode<32>(childrwkey),
-                                     std::string("ro-") + b32encode<32>(childrokey),
+        return Node(new ConcreteNode(sec::string("rw-") + b32encode<32>(childrwkey),
+                                     sec::string("ro-") + b32encode<32>(childrokey),
                                      rotostoragepath(childrokey),
                                      childrokey);
     }
