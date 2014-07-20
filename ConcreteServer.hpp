@@ -5,9 +5,9 @@
 #include "ConcreteNode.hpp"
 namespace rumpelstiltskin {
   struct ConcreteServer : public AbstractServer {
-    ConcreteServer(std::string mainsecret, std::string cloudsecret);
-    Node operator[](std::string) const;
-    Node operator()(Node const *, std::string) const;
+    ConcreteServer(sec::string mainsecret, sec::string cloudsecret);
+    Node operator[](sec::string) const;
+    Node operator()(Node const *, sec::string) const;
     Node attenuated(Node const *n) const;
   };
 }

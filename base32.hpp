@@ -23,13 +23,13 @@
 //DEALINGS IN THE SOFTWARE.
 #ifndef MINORFS_CAPFS_BASE32_HPP
 #define MINORFS_CAPFS_BASE32_HPP
-#include <string>
+#include "secure_string.hpp"
 
 template <int Len>
-std::string b32encode(const unsigned char *binary);
+sec::string b32encode(const unsigned char *binary);
 
 template <>
-std::string b32encode<5>(const unsigned char *binary) {
+sec::string b32encode<5>(const unsigned char *binary) {
    char target[9];
    target[0]=(binary[0] >> 3) & 0x01f;
    target[1]=((binary[0] << 2) & 0x01c) | ((binary[1] >> 6) & 0x007);
@@ -44,32 +44,32 @@ std::string b32encode<5>(const unsigned char *binary) {
    }
    target[8]=0;
    return target;
-}
+};
 
 template <>
-std::string b32encode<30>(const unsigned char *binary) {
+sec::string b32encode<30>(const unsigned char *binary) {
    return b32encode<5>(binary) +
           b32encode<5>(binary+5) +
           b32encode<5>(binary+10) +
           b32encode<5>(binary+15) +
           b32encode<5>(binary+20) +
           b32encode<5>(binary+25);
-}
+};
 
 template <>
-std::string b32encode<32>(const unsigned char *binary) {
+sec::string b32encode<32>(const unsigned char *binary) {
     unsigned char padded[5];
     padded[0]=binary[30];
     padded[1]=binary[31];
     padded[2]=padded[3]=padded[4]=0;
     return b32encode<30>(binary) + b32encode<5>(padded).substr(0,4);
-}
+};
 
 template <int Len>
-void b32decode(std::string input,unsigned char *binary);
+void b32decode(sec::string input,unsigned char *binary);
 
 template <>
-void b32decode<8>(std::string input,unsigned char *binary) {
+void b32decode<8>(sec::string input,unsigned char *binary) {
    unsigned char numbers[8];
    for (size_t index=0;index<8;index++) {
       char c=input.c_str()[index];
@@ -85,24 +85,24 @@ void b32decode<8>(std::string input,unsigned char *binary) {
    binary[2] = ((numbers[3] << 4) & 0x0f0) | ((numbers[4] >> 1 ) & 0x00f);
    binary[3] = ((numbers[4] << 7) & 0x080)  | ((numbers[5] << 2) & 0x07c) | ((numbers[6] >> 3 ) & 0x003);
    binary[4] = ((numbers[6] << 5) & 0x0e0) | ((numbers[7]) & 0x01f);
-}
+};
 
 template <>
-void b32decode<48>(std::string input,unsigned char *binary) {
+void b32decode<48>(sec::string input,unsigned char *binary) {
   b32decode<8>(input.substr(0,8),binary);
   b32decode<8>(input.substr(8,8),binary+5);
   b32decode<8>(input.substr(16,8),binary+10);
   b32decode<8>(input.substr(24,8),binary+15);
   b32decode<8>(input.substr(32,8),binary+20);
   b32decode<8>(input.substr(40,8),binary+25);
-}
+};
 
 template <>
-void b32decode<52>(std::string input,unsigned char *binary) {
+void b32decode<52>(sec::string input,unsigned char *binary) {
   b32decode<48>(input.substr(0,48),binary);
   unsigned char work[5];
   b32decode<8>(input.substr(48,4)+"AAAA",work);
   binary[30]=work[0];
   binary[31]=work[1];
-}
+};
 #endif
