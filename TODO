@@ -1,4 +1,3 @@
 * Use custom deleters for unique_ptr that thake care of wiping sensitive data
 * Migrate crypto logic from MinorFs2 sources to ConcreteServer, but using crypto++ instead of openssl.
-* Implement the random string stuff in rumpelstiltskin.cpp
 * Figure out why secure string dealocation does not fire.

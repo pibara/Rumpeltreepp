@@ -47,6 +47,54 @@ sec::string b32encode<5>(const unsigned char *binary) {
 };
 
 template <>
+sec::string b32encode<0>(const unsigned char *binary) {
+  return "";
+};
+
+template <>
+sec::string b32encode<1>(const unsigned char *binary) {
+  unsigned char padded[5];
+  padded[0]=binary[0];
+  padded[1]=padded[2]=padded[3]=padded[4]=0;
+  return b32encode<5>(padded).substr(0,2);
+};
+
+template <>
+sec::string b32encode<2>(const unsigned char *binary) {
+  unsigned char padded[5];
+  padded[0]=binary[0];
+  padded[1]=binary[1];
+  padded[2]=padded[3]=padded[4]=0;
+  return b32encode<5>(padded).substr(0,4);
+};
+
+template <>
+sec::string b32encode<3>(const unsigned char *binary) {
+  unsigned char padded[5];
+  padded[0]=binary[0];
+  padded[1]=binary[1];
+  padded[2]=binary[2];
+  padded[3]=padded[4]=0;
+  return b32encode<5>(padded).substr(0,5);
+};
+
+template <>
+sec::string b32encode<4>(const unsigned char *binary) {
+  unsigned char padded[5];
+  padded[0]=binary[0];
+  padded[1]=binary[1];
+  padded[2]=binary[2];
+  padded[3]=binary[3];
+  padded[4]=0;
+  return b32encode<5>(padded).substr(0,7);
+};
+
+template <int Len>
+sec::string b32encode(const unsigned char *binary) {
+  return b32encode<5>(binary) + b32encode<Len - 5>(binary+5);
+};
+
+/*template <>
 sec::string b32encode<30>(const unsigned char *binary) {
    return b32encode<5>(binary) +
           b32encode<5>(binary+5) +
@@ -63,7 +111,7 @@ sec::string b32encode<32>(const unsigned char *binary) {
     padded[1]=binary[31];
     padded[2]=padded[3]=padded[4]=0;
     return b32encode<30>(binary) + b32encode<5>(padded).substr(0,4);
-};
+};*/
 
 template <int Len>
 void b32decode(sec::string input,unsigned char *binary);

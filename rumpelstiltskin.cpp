@@ -12,8 +12,10 @@ namespace rumpelstiltskin {
     return Client(new ConcreteClient(cloudsecret));
   }
   sec::string pass2rootcap(sec::string pass) {
-    //FIXME
-    return "rw-ABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRST";
+    unsigned char pcbScratch[CryptoPP::SHA256::DIGESTSIZE];
+    CryptoPP::SHA256().CalculateDigest(pcbScratch,(const unsigned char *)(pass.c_str()),pass.size());
+    return sec::string("rw-") + b32encode<CryptoPP::SHA256::DIGESTSIZE>(pcbScratch);
+    //return "rw-ABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRST";
   }
   sec::string randomrootcap() {
     unsigned char pcbScratch[ 32 ];
@@ -22,7 +24,9 @@ namespace rumpelstiltskin {
     return sec::string("rw-") + b32encode<32>(pcbScratch);
   }
   sec::string randomsecret() {
-    //FIXME
-    return "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRST";
+    unsigned char pcbScratch[ 128 ];
+    CryptoPP::AutoSeededRandomPool rng;
+    rng.GenerateBlock( pcbScratch,128);
+    return b32encode<128>(pcbScratch);
   }
 }
