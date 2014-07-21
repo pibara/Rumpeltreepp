@@ -76,10 +76,17 @@ namespace rumpelstiltskin {
         CryptoPP::HMAC<CryptoPP::SHA256> hmac2(childrwkey,32);
         sec::string data2= "read-only::nosalt";
         hmac.CalculateDigest(childrokey,(const unsigned char *)(data2.c_str()),data2.size());
-        return Node(new ConcreteNode(sec::string("rw-") + b32encode<32>(childrwkey),
-                                     sec::string("ro-") + b32encode<32>(childrokey),
-                                     rotostoragepath(childrokey),
-                                     childrokey),this);
+        if (parent->is_attenuated()) {
+           return Node(new ConcreteNode("",
+                                        sec::string("ro-") + b32encode<32>(childrokey),
+                                        rotostoragepath(childrokey),
+                                        childrokey),this);
+        } else {
+           return Node(new ConcreteNode(sec::string("rw-") + b32encode<32>(childrwkey),
+                                        sec::string("ro-") + b32encode<32>(childrokey),
+                                        rotostoragepath(childrokey),
+                                        childrokey),this);
+        }
     }
     Node ConcreteServer::attenuated(Node const *n) const{
         return Node(new ConcreteNode("",n->attenuated_cap(),n->storage().path(), n->storage().crypto_key()),this);
