@@ -14,8 +14,7 @@ namespace rumpelstiltskin {
   sec::string pass2rootcap(sec::string pass) {
     unsigned char pcbScratch[CryptoPP::SHA256::DIGESTSIZE];
     CryptoPP::SHA256().CalculateDigest(pcbScratch,(const unsigned char *)(pass.c_str()),pass.size());
-    return sec::string("rw-") + b32encode<CryptoPP::SHA256::DIGESTSIZE>(pcbScratch);
-    //return "rw-ABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRST";
+    return sec::string("rw-") + b32encode<32>(pcbScratch);
   }
   sec::string randomrootcap() {
     unsigned char pcbScratch[ 32 ];

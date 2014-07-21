@@ -6,6 +6,8 @@
 #include <cryptopp/hmac.h>
 #include "ConcreteNode.hpp"
 #include "ConcreteServer.hpp"
+#include "secure_string.hpp"
+
 namespace rumpelstiltskin {
     ConcreteServer::ConcreteServer(sec::string mainsecret, sec::string cloudsecret):
           mMainSecret(mainsecret),mCloudSecret(cloudsecret) {}
