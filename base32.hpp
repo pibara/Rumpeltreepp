@@ -21,10 +21,9 @@
 //FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 //ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //DEALINGS IN THE SOFTWARE.
-#ifndef MINORFS_CAPFS_BASE32_HPP
-#define MINORFS_CAPFS_BASE32_HPP
+#ifndef _BASE32_HPP
+#define _BASE32_HPP
 #include "secure_string.hpp"
-
 template <int Len>
 sec::string b32encode(const unsigned char *binary);
 
@@ -93,25 +92,6 @@ template <int Len>
 sec::string b32encode(const unsigned char *binary) {
   return b32encode<5>(binary) + b32encode<Len - 5>(binary+5);
 };
-
-/*template <>
-sec::string b32encode<30>(const unsigned char *binary) {
-   return b32encode<5>(binary) +
-          b32encode<5>(binary+5) +
-          b32encode<5>(binary+10) +
-          b32encode<5>(binary+15) +
-          b32encode<5>(binary+20) +
-          b32encode<5>(binary+25);
-};
-
-template <>
-sec::string b32encode<32>(const unsigned char *binary) {
-    unsigned char padded[5];
-    padded[0]=binary[30];
-    padded[1]=binary[31];
-    padded[2]=padded[3]=padded[4]=0;
-    return b32encode<30>(binary) + b32encode<5>(padded).substr(0,4);
-};*/
 
 template <int Len>
 void b32decode(sec::string input,unsigned char *binary);

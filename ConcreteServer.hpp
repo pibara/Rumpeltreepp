@@ -12,7 +12,7 @@ namespace rumpelstiltskin {
     private:
       void rotostoragekey(sec::string rocap,uint8_t *storagekey) const;
       sec::string rwtoro(sec::string rwcap,uint8_t *storagekey) const;
-      sec::string rotostoragepath(sec::string rocap) const;
+      sec::string rotostoragepath(uint8_t *storagekey) const;
       sec::string mMainSecret;
       sec::string mCloudSecret;
   };
