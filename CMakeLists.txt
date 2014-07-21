@@ -31,7 +31,7 @@ set(rumpeltree++_SOURCES
         Storage.cpp
         base32.cpp
         rumpelstiltskin.cpp)
-add_library(rumpeltree++ ${rumpeltree++_SOURCES})
+add_library(rumpeltree++ SHARED ${rumpeltree++_SOURCES})
 SET_TARGET_PROPERTIES(rumpeltree++ PROPERTIES VERSION 0.1.1 SOVERSION 2)
 target_link_libraries(rumpeltree++ crypto++)
 install_targets(/lib rumpeltree++)
