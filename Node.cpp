@@ -1,7 +1,7 @@
 #include "rumpelstiltskin.hpp"
 #include <string.h>
 namespace rumpelstiltskin {
-  Node::Node(AbstractNode *node,AbstractServer const *server):pImpl(node),sServer(server) {};
+  Node::Node(AbstractNode *node,AbstractServer const *server):sServer(server),pImpl(node) {};
   sec::string Node::unattenuated_cap() const {
       return pImpl->unattenuated_cap();
   }

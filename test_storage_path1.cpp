@@ -7,7 +7,7 @@ int main(int argc,char **argv) {
   sec::string secret2=rumpelstiltskin::randomsecret();
   auto server1 = rumpelstiltskin::create_server(secret1);
   auto server2 = rumpelstiltskin::create_server(secret2);
-  rootcap = rumpelstiltskin::pass2rootcap("knockknock");
+  auto rootcap = rumpelstiltskin::pass2rootcap("knockknock");
   auto rootnode1 = server1[rootcap];
   auto rootnode2 = server2[rootcap];
   if (rootnode1.attenuated_cap() != rootnode2.attenuated_cap()) {
