@@ -1,5 +1,6 @@
 #include "ConcreteClient.hpp"
 #include "ConcreteStorage.hpp"
+#include <string.h>
 namespace rumpelstiltskin {
   ConcreteClient::ConcreteClient(sec::string cloudsecret):mFakeServer("bogus",cloudsecret) {}
   sec::string ConcreteClient::attenuate(sec::string s){

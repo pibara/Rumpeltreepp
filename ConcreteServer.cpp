@@ -91,4 +91,8 @@ namespace rumpelstiltskin {
     Node ConcreteServer::attenuated(Node const *n) const{
         return Node(new ConcreteNode("",n->attenuated_cap(),n->storage().path(), n->storage().crypto_key()),this);
     }
+    void ConcreteServer::operator delete(void * p, size_t s) {
+       ::memset(p, 0, s);
+       ::operator delete(p);
+    }
 }

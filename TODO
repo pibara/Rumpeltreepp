@@ -1,3 +1,6 @@
-* Use custom deleters for unique_ptr that thake care of wiping sensitive data
-* Migrate crypto logic from MinorFs2 sources to ConcreteServer, but using crypto++ instead of openssl.
-* Figure out why secure string dealocation does not fire.
+* write more complete set of tests
+* check for memory leaks
+* documentation
+* more comments in code
+* check const correctness
+* Make stuff compile with extra compile flags (old style cast and effective c++)

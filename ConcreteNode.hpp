@@ -10,6 +10,7 @@ namespace rumpelstiltskin {
       sec::string unattenuated_cap() const ;
       Storage storage() const;
       bool is_attenuated() const ;
+      void operator delete(void * p, size_t s);
     private:
       sec::string const mRwCap;
       sec::string const mRoCap;

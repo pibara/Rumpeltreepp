@@ -7,6 +7,7 @@ namespace rumpelstiltskin {
         ~ConcreteStorage();
         sec::string path() const;
         uint8_t const * const crypto_key() const;
+        void operator delete(void * p, size_t s);
     private:
         uint8_t mKey[32];
         sec::string mPath;

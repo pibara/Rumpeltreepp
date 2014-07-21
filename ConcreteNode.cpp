@@ -1,5 +1,6 @@
 #include "rumpelstiltskin.hpp"
 #include <string.h>
+#include <new>
 #include "ConcreteNode.hpp"
 #include "ConcreteStorage.hpp"
 namespace rumpelstiltskin {
@@ -22,5 +23,9 @@ namespace rumpelstiltskin {
       }
       bool ConcreteNode::is_attenuated() const {
          return (mRwCap == "");
+      }
+      void ConcreteNode::operator delete(void * p, size_t s) {
+         ::memset(p, 0, s);
+         ::operator delete(p);
       }
 }

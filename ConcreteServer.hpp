@@ -9,6 +9,7 @@ namespace rumpelstiltskin {
       Node operator[](sec::string) const;
       Node operator()(Node const *, sec::string) const;
       Node attenuated(Node const *n) const;
+      void operator delete(void * p, size_t s);
     private:
       void rotostoragekey(sec::string rocap,uint8_t *storagekey) const;
       sec::string rwtoro(sec::string rwcap,uint8_t *storagekey) const;
