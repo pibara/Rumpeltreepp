@@ -75,7 +75,7 @@ namespace rumpelstiltskin {
         sec::string rwcap = sec::string("rw-") + b32encode<32>(childrwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac2(childrwkey,32);
         sec::string data2= "read-only::nosalt";
-        hmac.CalculateDigest(childrokey,(const unsigned char *)(data2.c_str()),data2.size());
+        hmac2.CalculateDigest(childrokey,(const unsigned char *)(data2.c_str()),data2.size());
         if (parent->is_attenuated()) {
            return Node(new ConcreteNode("",
                                         sec::string("ro-") + b32encode<32>(childrokey),

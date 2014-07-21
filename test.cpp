@@ -23,8 +23,8 @@ int main(int argc,char **argv) {
   std::cout << "  main         : " << rootnode.cap() << std::endl;
   auto storage = rootnode.storage();
   std::cout << "  storage_path : " << storage.path() << std::endl;
-  uint8_t const * const key=storage.crypto_key();
-  bool attenuated = rootnode.is_attenuated();
+  //uint8_t const * const key=storage.crypto_key();
+  //bool attenuated = rootnode.is_attenuated();
   //Create an attenuated version of the root node
   auto attenuatedrootnode = rootnode.attenuated();
   //Create a child node of the unatenuated root node

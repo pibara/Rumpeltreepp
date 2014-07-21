@@ -42,4 +42,6 @@ add_test(tests.randomsecret randomsecrettest)
 add_executable(storagepath1test test_storage_path1.cpp)
 target_link_libraries(storagepath1test rumpeltree++)
 add_test(tests.storagepath1 storagepath1test)
+add_executable(demo test.cpp)
+target_link_libraries(demo rumpeltree++)
 
