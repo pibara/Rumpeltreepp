@@ -10,18 +10,15 @@ For a description of what this library does, please have a look at these two blo
 
 Please have a look at test.cpp to view how the API is  coming along.
 
-Currently this project is built using a still rather crude cmake config, that does not
-test for availability of important libraries and uses hardcoded path to some cmake binaries.
-As such, RumpelTree++ is still very much a work in progress that you should not yet be using
-in production systems. I hope to release a more robust release in the comming weeks, but the 
-current version should be sufficient to play around with, and possibly suplying me with feedback 
-on the API.
+RumpelTree++ is still very much a work in progress, primaraly still lacking a few essential tests,  
+that for that  reason you should not yet be usingin production systems yet. 
+I hope to release a fully tested release in the comming weeks, but the current version should at least 
+be sufficient to play around with, and possibly suplying me with feedback on the API.
 
 To build you will need to:
 
 * Make sure cmake, llvm and clang are installed.
 * Make sure Crypto++ is installed (both library and development headers)
-* Have a good look ar CMakeLists.txt, adjust the hard-coded llvm tool paths if needed.
 * Create a directory 'build'
 * Change your working dir to the new 'build' dir
 * Run 'cmake ..'
