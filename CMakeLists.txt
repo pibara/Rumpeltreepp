@@ -10,7 +10,7 @@ set(exec_prefix ${CMAKE_INSTALL_PREFIX})
 set(libdir      ${CMAKE_INSTALL_PREFIX}/lib)
 set(includedir  ${CMAKE_INSTALL_PREFIX}/include)
 #FIXME: -Weffc++ -Wold-style-cast should be addable below without braking the build
-set(CMAKE_CXX_FLAGS                "-Wall -O3 -std=c++0x -Werror -Wctor-dtor-privacy -Wuninitialized -Winit-self -Wmissing-include-dirs -Wfloat-equal -Wshadow -Wpointer-arith -Wunreachable-code")
+set(CMAKE_CXX_FLAGS                "-Wall -O3 -std=c++0x -Werror -Wctor-dtor-privacy -Wuninitialized -Winit-self -Wmissing-include-dirs -Wfloat-equal -Wshadow -Wpointer-arith -Wunreachable-code -Wold-style-cast")
 CHECK_INCLUDE_FILE_CXX(cryptopp/hmac.h CRYPTOPP_HMAC_INCLUDE)
 CHECK_INCLUDE_FILE_CXX(cryptopp/sha.h CRYPTOPP_SHA_INCLUDE)
 CHECK_INCLUDE_FILE_CXX(cryptopp/osrng.h CRYPTOPP_OSRNG_INCLUDE)

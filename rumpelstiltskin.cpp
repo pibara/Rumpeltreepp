@@ -13,7 +13,7 @@ namespace rumpelstiltskin {
   }
   std::string pass2rootcap(std::string pass) {
     unsigned char pcbScratch[CryptoPP::SHA256::DIGESTSIZE];
-    CryptoPP::SHA256().CalculateDigest(pcbScratch,(const unsigned char *)(pass.c_str()),pass.size());
+    CryptoPP::SHA256().CalculateDigest(pcbScratch,reinterpret_cast<const unsigned char *>(pass.c_str()),pass.size());
     return std::string("rw-") + b32encode<32>(pcbScratch);
   }
   std::string randomrootcap() {

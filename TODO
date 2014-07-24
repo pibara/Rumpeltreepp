@@ -1,7 +1,7 @@
-* write more complete set of tests
-* check for memory leaks
-* documentation
-* more comments in code
-* check const correctness
 * Make stuff compile with extra compile flags (old style cast and effective c++)
 * Make base32 more generic
+* check const correctness
+* write more complete set of tests
+* more comments in code
+* check for memory leaks
+* documentation

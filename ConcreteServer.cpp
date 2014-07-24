@@ -52,7 +52,7 @@ namespace rumpelstiltskin {
         b32decode<52>(rwcap.substr(3,52),rwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(rwkey,32);
         std::string data= "read-only::nosalt";
-        hmac.CalculateDigest(storagekey,(const unsigned char *)(data.c_str()),data.size());        
+        hmac.CalculateDigest(storagekey,reinterpret_cast<const unsigned char *>(data.c_str()),data.size());        
         return std::string("ro-") + b32encode<32>(storagekey);
     }
 
@@ -60,7 +60,7 @@ namespace rumpelstiltskin {
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(storagekey,32);
         std::string data = std::string("storage::") + mCloudSecret;
         uint8_t storagepathkey[32];
-        hmac.CalculateDigest(storagepathkey,(const unsigned char *)(data.c_str()),data.size());
+        hmac.CalculateDigest(storagepathkey,reinterpret_cast<const unsigned char *>(data.c_str()),data.size());
         std::string b32=b32encode<32>(storagepathkey);
         return b32.substr(0,2) + "/" + b32.substr(2,2) + "/" + b32.substr(4,48);
     }
@@ -71,11 +71,11 @@ namespace rumpelstiltskin {
         std::string data = child + "::" +  mMainSecret;
         uint8_t childrwkey[32];
         uint8_t childrokey[32];
-        hmac.CalculateDigest(childrwkey,(const unsigned char *)(data.c_str()),data.size());
+        hmac.CalculateDigest(childrwkey,reinterpret_cast<const unsigned char *>(data.c_str()),data.size());
         std::string rwcap = std::string("rw-") + b32encode<32>(childrwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac2(childrwkey,32);
         std::string data2= "read-only::nosalt";
-        hmac2.CalculateDigest(childrokey,(const unsigned char *)(data2.c_str()),data2.size());
+        hmac2.CalculateDigest(childrokey,reinterpret_cast<const unsigned char *>(data2.c_str()),data2.size());
         if (parent->is_attenuated()) {
            return Node(new ConcreteNode("",
                                         std::string("ro-") + b32encode<32>(childrokey),
