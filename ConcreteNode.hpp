@@ -4,17 +4,17 @@
 #include <string.h>
 namespace rumpelstiltskin {
   struct ConcreteNode : public AbstractNode {
-      ConcreteNode(sec::string rw,sec::string ro, sec::string loc, uint8_t const *key);
+      ConcreteNode(std::string rw,std::string ro, std::string loc, uint8_t const *key);
       ~ConcreteNode();
-      sec::string attenuated_cap() const ;
-      sec::string unattenuated_cap() const ;
+      std::string attenuated_cap() const ;
+      std::string unattenuated_cap() const ;
       Storage storage() const;
       bool is_attenuated() const ;
       void operator delete(void * p, size_t s);
     private:
-      sec::string const mRwCap;
-      sec::string const mRoCap;
-      sec::string const mLocation;
+      std::string const mRwCap;
+      std::string const mRoCap;
+      std::string const mLocation;
       uint8_t mKey[32];
   };
 }

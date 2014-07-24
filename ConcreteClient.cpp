@@ -2,12 +2,12 @@
 #include "ConcreteStorage.hpp"
 #include <string.h>
 namespace rumpelstiltskin {
-  ConcreteClient::ConcreteClient(sec::string cloudsecret):mFakeServer("bogus",cloudsecret) {}
-  sec::string ConcreteClient::attenuate(sec::string s){
+  ConcreteClient::ConcreteClient(std::string cloudsecret):mFakeServer("bogus",cloudsecret) {}
+  std::string ConcreteClient::attenuate(std::string s){
      auto node=mFakeServer[s];
      return node.attenuated_cap();
   }
-  Storage ConcreteClient::storage(sec::string s) {
+  Storage ConcreteClient::storage(std::string s) {
     auto node=mFakeServer[s];
     return node.storage();
   }

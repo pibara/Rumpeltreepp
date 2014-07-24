@@ -23,42 +23,42 @@
 //DEALINGS IN THE SOFTWARE.
 #ifndef _BASE32_HPP
 #define _BASE32_HPP
-#include "secure_string.hpp"
+#include <string>
 template <int Len>
-sec::string b32encode(const unsigned char *binary);
+std::string b32encode(const unsigned char *binary);
 
 template <>
-sec::string b32encode<5>(const unsigned char *binary);
+std::string b32encode<5>(const unsigned char *binary);
 
 template <>
-sec::string b32encode<0>(const unsigned char *binary);
+std::string b32encode<0>(const unsigned char *binary);
 
 template <>
-sec::string b32encode<1>(const unsigned char *binary);
+std::string b32encode<1>(const unsigned char *binary);
 
 template <>
-sec::string b32encode<2>(const unsigned char *binary);
+std::string b32encode<2>(const unsigned char *binary);
 
 template <>
-sec::string b32encode<3>(const unsigned char *binary);
+std::string b32encode<3>(const unsigned char *binary);
 
 template <>
-sec::string b32encode<4>(const unsigned char *binary);
+std::string b32encode<4>(const unsigned char *binary);
 
 template <int Len>
-sec::string b32encode(const unsigned char *binary) {
+std::string b32encode(const unsigned char *binary) {
   return b32encode<5>(binary) + b32encode<Len - 5>(binary+5);
 };
 
 template <int Len>
-void b32decode(sec::string input,unsigned char *binary);
+void b32decode(std::string input,unsigned char *binary);
 
 template <>
-void b32decode<8>(sec::string input,unsigned char *binary);
+void b32decode<8>(std::string input,unsigned char *binary);
 
 template <>
-void b32decode<48>(sec::string input,unsigned char *binary);
+void b32decode<48>(std::string input,unsigned char *binary);
 
 template <>
-void b32decode<52>(sec::string input,unsigned char *binary);
+void b32decode<52>(std::string input,unsigned char *binary);
 #endif

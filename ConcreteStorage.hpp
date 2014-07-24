@@ -3,14 +3,14 @@
 #include "rumpelstiltskin.hpp"
 namespace rumpelstiltskin {
   struct  ConcreteStorage: public AbstractStorage {
-        ConcreteStorage(uint8_t const * const, sec::string);
+        ConcreteStorage(uint8_t const * const, std::string);
         ~ConcreteStorage();
-        sec::string path() const;
+        std::string path() const;
         uint8_t const * const crypto_key() const;
         void operator delete(void * p, size_t s);
     private:
         uint8_t mKey[32];
-        sec::string mPath;
+        std::string mPath;
   };
 }
 #endif

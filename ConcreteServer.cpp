@@ -6,14 +6,14 @@
 #include <cryptopp/hmac.h>
 #include "ConcreteNode.hpp"
 #include "ConcreteServer.hpp"
-#include "secure_string.hpp"
+#include <string>
 
 namespace rumpelstiltskin {
-    ConcreteServer::ConcreteServer(sec::string mainsecret, sec::string cloudsecret):
+    ConcreteServer::ConcreteServer(std::string mainsecret, std::string cloudsecret):
           mMainSecret(mainsecret),mCloudSecret(cloudsecret) {}
-    Node ConcreteServer::operator[](sec::string b32cap) const {
-        sec::string rwcap = b32cap;
-        sec::string rocap = b32cap;
+    Node ConcreteServer::operator[](std::string b32cap) const {
+        std::string rwcap = b32cap;
+        std::string rocap = b32cap;
         char const * cstr=b32cap.c_str();
         bool validcap=(b32cap.size() == 55 ) &&
                 (cstr[0] == 'r') &&
@@ -34,7 +34,7 @@ namespace rumpelstiltskin {
                rwcap = "";
                rotostoragekey(rocap,storagekey);
            }
-           sec::string storagepath = rotostoragepath(storagekey);
+           std::string storagepath = rotostoragepath(storagekey);
            return Node(new ConcreteNode(rwcap,rocap,storagepath,storagekey),this);
         } else {
             uint8_t buf[32];
@@ -43,47 +43,47 @@ namespace rumpelstiltskin {
         }
     }
 
-    void ConcreteServer::rotostoragekey(sec::string rocap,uint8_t *storagekey) const {
+    void ConcreteServer::rotostoragekey(std::string rocap,uint8_t *storagekey) const {
         b32decode<52>(rocap.substr(3,52),storagekey);
     }
 
-    sec::string ConcreteServer::rwtoro(sec::string rwcap,uint8_t *storagekey) const {
+    std::string ConcreteServer::rwtoro(std::string rwcap,uint8_t *storagekey) const {
         uint8_t rwkey[32];
         b32decode<52>(rwcap.substr(3,52),rwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(rwkey,32);
-        sec::string data= "read-only::nosalt";
+        std::string data= "read-only::nosalt";
         hmac.CalculateDigest(storagekey,(const unsigned char *)(data.c_str()),data.size());        
-        return sec::string("ro-") + b32encode<32>(storagekey);
+        return std::string("ro-") + b32encode<32>(storagekey);
     }
 
-    sec::string ConcreteServer::rotostoragepath(uint8_t *storagekey) const {
+    std::string ConcreteServer::rotostoragepath(uint8_t *storagekey) const {
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(storagekey,32);
-        sec::string data = sec::string("storage::") + mCloudSecret;
+        std::string data = std::string("storage::") + mCloudSecret;
         uint8_t storagepathkey[32];
         hmac.CalculateDigest(storagepathkey,(const unsigned char *)(data.c_str()),data.size());
-        sec::string b32=b32encode<32>(storagepathkey);
+        std::string b32=b32encode<32>(storagepathkey);
         return b32.substr(0,2) + "/" + b32.substr(2,2) + "/" + b32.substr(4,48);
     }
 
-    Node ConcreteServer::operator()(Node const *parent, sec::string child) const {
+    Node ConcreteServer::operator()(Node const *parent, std::string child) const {
         uint8_t const *storagekey = parent->storage().crypto_key();
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(storagekey,32);
-        sec::string data = child + "::" +  mMainSecret;
+        std::string data = child + "::" +  mMainSecret;
         uint8_t childrwkey[32];
         uint8_t childrokey[32];
         hmac.CalculateDigest(childrwkey,(const unsigned char *)(data.c_str()),data.size());
-        sec::string rwcap = sec::string("rw-") + b32encode<32>(childrwkey);
+        std::string rwcap = std::string("rw-") + b32encode<32>(childrwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac2(childrwkey,32);
-        sec::string data2= "read-only::nosalt";
+        std::string data2= "read-only::nosalt";
         hmac2.CalculateDigest(childrokey,(const unsigned char *)(data2.c_str()),data2.size());
         if (parent->is_attenuated()) {
            return Node(new ConcreteNode("",
-                                        sec::string("ro-") + b32encode<32>(childrokey),
+                                        std::string("ro-") + b32encode<32>(childrokey),
                                         rotostoragepath(childrokey),
                                         childrokey),this);
         } else {
-           return Node(new ConcreteNode(sec::string("rw-") + b32encode<32>(childrwkey),
-                                        sec::string("ro-") + b32encode<32>(childrokey),
+           return Node(new ConcreteNode(std::string("rw-") + b32encode<32>(childrwkey),
+                                        std::string("ro-") + b32encode<32>(childrokey),
                                         rotostoragepath(childrokey),
                                         childrokey),this);
         }

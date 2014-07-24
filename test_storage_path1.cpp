@@ -3,8 +3,8 @@
 
 int main(int argc,char **argv) {
   
-  sec::string secret1=rumpelstiltskin::randomsecret();
-  sec::string secret2=rumpelstiltskin::randomsecret();
+  std::string secret1=rumpelstiltskin::randomsecret();
+  std::string secret2=rumpelstiltskin::randomsecret();
   auto server1 = rumpelstiltskin::create_server(secret1);
   auto server2 = rumpelstiltskin::create_server(secret2);
   auto rootcap = rumpelstiltskin::pass2rootcap("knockknock");

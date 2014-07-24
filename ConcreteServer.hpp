@@ -5,17 +5,17 @@
 #include "ConcreteNode.hpp"
 namespace rumpelstiltskin {
   struct ConcreteServer : public AbstractServer {
-      ConcreteServer(sec::string mainsecret, sec::string cloudsecret);
-      Node operator[](sec::string) const;
-      Node operator()(Node const *, sec::string) const;
+      ConcreteServer(std::string mainsecret, std::string cloudsecret);
+      Node operator[](std::string) const;
+      Node operator()(Node const *, std::string) const;
       Node attenuated(Node const *n) const;
       void operator delete(void * p, size_t s);
     private:
-      void rotostoragekey(sec::string rocap,uint8_t *storagekey) const;
-      sec::string rwtoro(sec::string rwcap,uint8_t *storagekey) const;
-      sec::string rotostoragepath(uint8_t *storagekey) const;
-      sec::string mMainSecret;
-      sec::string mCloudSecret;
+      void rotostoragekey(std::string rocap,uint8_t *storagekey) const;
+      std::string rwtoro(std::string rwcap,uint8_t *storagekey) const;
+      std::string rotostoragepath(uint8_t *storagekey) const;
+      std::string mMainSecret;
+      std::string mCloudSecret;
   };
 }
 #endif
