@@ -4,3 +4,4 @@
 * more comments in code
 * check const correctness
 * Make stuff compile with extra compile flags (old style cast and effective c++)
+* Make base32 more generic
