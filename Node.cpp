@@ -19,7 +19,7 @@ namespace rumpelstiltskin {
   Storage Node::storage() const {
       return pImpl->storage();
   }
-  Node Node::operator[](std::string s) const {
+  Node Node::operator[](std::string const &s) const {
      return (*sServer)(this,s);
   }
   bool Node::is_attenuated() const {

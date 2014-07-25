@@ -5,7 +5,7 @@
 namespace rumpelstiltskin {
   /*Concrete implementation class for Node's*/
   struct ConcreteNode : public AbstractNode {
-      ConcreteNode(string rw,string ro, string loc, uint8_t const *key);
+      ConcreteNode(string const &rw,string const &ro, string const &loc, uint8_t const *key);
       ~ConcreteNode(); //Destructor wipes the key.
       string attenuated_cap() const ;
       string unattenuated_cap() const ;

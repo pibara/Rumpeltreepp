@@ -3,7 +3,7 @@
 #include "rumpelstiltskin.hpp"
 namespace rumpelstiltskin {
   struct  ConcreteStorage: public AbstractStorage {
-        ConcreteStorage(uint8_t const * const, string);
+        ConcreteStorage(uint8_t const * const, string const &);
         ~ConcreteStorage();
         string path() const;
         uint8_t const * const crypto_key() const;

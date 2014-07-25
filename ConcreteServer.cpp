@@ -9,9 +9,9 @@
 #include <string>
 
 namespace rumpelstiltskin {
-    ConcreteServer::ConcreteServer(string mainsecret, string cloudsecret):
+    ConcreteServer::ConcreteServer(string const &mainsecret, string const &cloudsecret):
           mMainSecret(mainsecret),mCloudSecret(cloudsecret) {}
-    Node ConcreteServer::operator[](string b32cap) const {
+    Node ConcreteServer::operator[](string const &b32cap) const {
         string rwcap = b32cap;
         string rocap = b32cap;
         char const * cstr=b32cap.c_str();
@@ -47,12 +47,12 @@ namespace rumpelstiltskin {
         }
     }
 
-    void ConcreteServer::rotostoragekey(string rocap,uint8_t *storagekey) const {
+    void ConcreteServer::rotostoragekey(string const &rocap,uint8_t *storagekey) const {
         b32decode<32>(rocap.substr(3,52),storagekey); //The storagekey is simply the binary representation of the 
                                                       //attenuated authority cap
     }
 
-    string ConcreteServer::rwtoro(string rwcap,uint8_t *storagekey) const {
+    string ConcreteServer::rwtoro(string const &rwcap,uint8_t *storagekey) const {
         uint8_t rwkey[32];
         b32decode<32>(rwcap.substr(3,52),rwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(rwkey,32); //Create an HMAC object using the binary unattenuated cap as key.
@@ -73,7 +73,7 @@ namespace rumpelstiltskin {
     }
 
     //Decomposition
-    Node ConcreteServer::operator()(Node const *parent, std::string child) const {
+    Node ConcreteServer::operator()(Node const *parent, std::string const &child) const {
         uint8_t const *storagekey = parent->storage().crypto_key(); //Get the parents storage crypto key.
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(storagekey,32); //Use the key as key for HMAC
         string data = child + "::" +  mMainSecret; //Use the main secret for digest calculation as to disalow dangerous

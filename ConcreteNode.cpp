@@ -4,7 +4,7 @@
 #include "ConcreteNode.hpp"
 #include "ConcreteStorage.hpp"
 namespace rumpelstiltskin {
-      ConcreteNode::ConcreteNode(string rw,string ro, string loc, uint8_t const *key):mRwCap(rw),
+      ConcreteNode::ConcreteNode(string const &rw,string const &ro, string const &loc, uint8_t const *key):mRwCap(rw),
                                                                                        mRoCap(ro),
                                                                                        mLocation(loc) {
           memcpy(mKey,key,32); //Copy the raw bytes of the key.

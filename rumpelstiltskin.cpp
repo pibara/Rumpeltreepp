@@ -5,13 +5,13 @@
 #include <cryptopp/osrng.h>
 #include "base32.hpp"
 namespace rumpelstiltskin {
-  Server  create_server(string mainsecret, string cloudsecret) {
+  Server  create_server(string const &mainsecret, string const &cloudsecret) {
     return Server(new ConcreteServer(mainsecret,cloudsecret));
   };
-  Client create_client(string cloudsecret) {
+  Client create_client(string const &cloudsecret) {
     return Client(new ConcreteClient(cloudsecret));
   }
-  string pass2rootcap(string pass) {
+  string pass2rootcap(string const &pass) {
     unsigned char pcbScratch[CryptoPP::SHA256::DIGESTSIZE];
     CryptoPP::SHA256().CalculateDigest(pcbScratch,reinterpret_cast<const unsigned char *>(pass.c_str()),pass.size());
     string rval= string("rw-") + b32encode<32>(pcbScratch);

@@ -7,9 +7,9 @@
 namespace rumpelstiltskin {
   /*The concrete impementation class for the client side class*/
   struct ConcreteClient : public AbstractClient {
-      ConcreteClient(string cloudsecret);
-      string attenuate(string uacap) const;
-      Storage storage(string) const;
+      ConcreteClient(string const &cloudsecret);
+      string attenuate(string const &uacap) const;
+      Storage storage(string const &) const;
      private:
       ConcreteServer const mFakeServer;
   };

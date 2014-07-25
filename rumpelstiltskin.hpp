@@ -111,7 +111,7 @@ namespace rumpelstiltskin {
       string unattenuated_cap() const ;
       string cap() const ; //Convenience method for getting the unattenuated cap if available or the attenuated cap if not.
       Storage storage() const ;
-      Node operator[](std::string) const ; //Convenience method for getting at child node using weak name. Will throw for client side.
+      Node operator[](std::string const &) const ; //Convenience method for getting at child node using weak name. Will throw for client side.
       bool is_attenuated() const;
       Node attenuated() const;
     private:
@@ -121,38 +121,38 @@ namespace rumpelstiltskin {
 
   //Server or File-system side.
   struct AbstractServer {
-      virtual Node operator[](string) const = 0; //Get a Node from a sparse-cap string.
-      virtual Node operator()(Node const *, std::string) const= 0; //Get a child node using a weak name and a parent node.
+      virtual Node operator[](string const &) const = 0; //Get a Node from a sparse-cap string.
+      virtual Node operator()(Node const *, std::string const &) const= 0; //Get a child node using a weak name and a parent node.
       virtual Node attenuated(Node const *) const = 0;
   };
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
-      Node operator[](string) const;
-      Node operator()(Node const *, std::string) const;
+      Node operator[](string const &) const;
+      Node operator()(Node const *, std::string const &) const;
       Node attenuated(Node const *) const;
     private:
       std::unique_ptr<AbstractServer> pImpl;
   };
   // Client or regular process side.
   struct AbstractClient {
-      virtual string attenuate(string) const =0;
-      virtual Storage storage(string) const =0; //Don't use this for client side en/decryption without an clear security architecture
+      virtual string attenuate(string const &) const =0;
+      virtual Storage storage(string const &) const =0; //Don't use this for client side en/decryption without an clear security architecture
   };
   struct Client: public AbstractClient {
       Client(AbstractClient *);
-      string attenuate(string) const;
-      Storage storage(string) const; //Don't use this for client side en/decryption without an clear security architecture
+      string attenuate(string const &) const;
+      Storage storage(string const &) const; //Don't use this for client side en/decryption without an clear security architecture
     private:
       std::unique_ptr<AbstractClient> pImpl;
   };
 
   //Function for creating a server object using one or two secrets. Use one secret for local storage or two
   //if you are using any kind of network storage server or service as underlying place to do serialization.
-  Server create_server(string mainsecret, string cloudsecret="local");
+  Server create_server(string const & mainsecret, string const & cloudsecret="local");
   //Create a client object for client side attenuation and decryption.
-  Client create_client(string cloudsecret="local");
+  Client create_client(string const & cloudsecret="local");
   //Turn a password of kinds into a suitable root cap for a tree.
-  string pass2rootcap(string pass);
+  string pass2rootcap(string const &pass);
   //Get a securely random suitable root cap for a tree.
   string randomrootcap();
   //Get a securely random secret usable as argument for create_server

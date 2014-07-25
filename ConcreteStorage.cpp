@@ -2,7 +2,7 @@
 #include "ConcreteStorage.hpp"
 #include <string.h>
 namespace rumpelstiltskin {
-    ConcreteStorage::ConcreteStorage(uint8_t const * const key, string paths):mPath(paths) {
+    ConcreteStorage::ConcreteStorage(uint8_t const * const key, string const &paths):mPath(paths) {
         memcpy(mKey,key,32);
     }
     ConcreteStorage::~ConcreteStorage() {
