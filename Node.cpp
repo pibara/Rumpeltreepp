@@ -1,6 +1,7 @@
 #include "rumpelstiltskin.hpp"
 #include <string.h>
 namespace rumpelstiltskin {
+  //Implementation of a whole lot of PIMPL forwarders.
   Node::Node(AbstractNode *node,AbstractServer const *server):sServer(server),pImpl(node) {};
   string Node::unattenuated_cap() const {
       return pImpl->unattenuated_cap();

@@ -14,18 +14,29 @@ namespace rumpelstiltskin {
   string pass2rootcap(string pass) {
     unsigned char pcbScratch[CryptoPP::SHA256::DIGESTSIZE];
     CryptoPP::SHA256().CalculateDigest(pcbScratch,reinterpret_cast<const unsigned char *>(pass.c_str()),pass.size());
-    return string("rw-") + b32encode<32>(pcbScratch);
+    string rval= string("rw-") + b32encode<32>(pcbScratch);
+    memclear32(pcbScratch);
+    return rval;
   }
   string randomrootcap() {
     unsigned char pcbScratch[ 32 ];
     CryptoPP::AutoSeededRandomPool rng;
     rng.GenerateBlock( pcbScratch, 32 );
-    return string("rw-") + b32encode<32>(pcbScratch);
+    string rval= string("rw-") + b32encode<32>(pcbScratch);
+    memclear32(pcbScratch);
+    return rval;
   }
   string randomsecret() {
     unsigned char pcbScratch[ 128 ];
     CryptoPP::AutoSeededRandomPool rng;
     rng.GenerateBlock( pcbScratch,128);
-    return b32encode<128>(pcbScratch);
+    string rval= b32encode<128>(pcbScratch);
+    memclear32(pcbScratch);
+    return rval;
+  }
+  void memclear32(volatile unsigned char *p) {
+      for (size_t index=0;index<32;index++){
+         p[index]=0;
+      }
   }
 }

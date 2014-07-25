@@ -1,5 +1,6 @@
 #include "rumpelstiltskin.hpp"
 #include <string.h>
+//Implementation of the sensitive data wiping string class.
 namespace rumpelstiltskin {
    string::string(const std::string &str):mString(str){}
    string::string(const std::string& str, size_t pos, size_t len):mString(str,pos,len){}

@@ -3,17 +3,18 @@
 #include "rumpelstiltskin.hpp"
 #include <string.h>
 namespace rumpelstiltskin {
+  /*Concrete implementation class for Node's*/
   struct ConcreteNode : public AbstractNode {
       ConcreteNode(string rw,string ro, string loc, uint8_t const *key);
-      ~ConcreteNode();
+      ~ConcreteNode(); //Destructor wipes the key.
       string attenuated_cap() const ;
       string unattenuated_cap() const ;
       Storage storage() const;
       bool is_attenuated() const ;
     private:
-      string const mRwCap;
-      string const mRoCap;
-      string const mLocation;
+      string const mRwCap; //Note, these strings are of a type wiped on destruction.
+      string const mRoCap; //Note, these strings are of a type wiped on destruction.
+      string const mLocation; //Note, these strings are of a type wiped on destruction.
       uint8_t mKey[32];
   };
 }

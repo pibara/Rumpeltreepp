@@ -9,7 +9,7 @@ namespace rumpelstiltskin {
         uint8_t const * const crypto_key() const;
     private:
         uint8_t mKey[32];
-        string const mPath;
+        string const mPath; //Note that this is a string that is wiped on destruction.
   };
 }
 #endif

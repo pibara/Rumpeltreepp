@@ -5,6 +5,7 @@
 #include "ConcreteNode.hpp"
 #include "ConcreteServer.hpp"
 namespace rumpelstiltskin {
+  /*The concrete impementation class for the client side class*/
   struct ConcreteClient : public AbstractClient {
       ConcreteClient(string cloudsecret);
       string attenuate(string uacap) const;

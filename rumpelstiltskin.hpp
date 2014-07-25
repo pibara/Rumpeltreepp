@@ -32,6 +32,8 @@ namespace rumpelstiltskin {
   struct Server;
   struct AbstractServer;
   struct string;
+  //This forwarder class is a semi complete string replacement forwarder that wipes its content on destruction.
+  //This is the base stringclass for this library for all strings that could contain sensistive data,
   struct string {
         string(const std::string &str);
         string(const std::string& str, size_t pos, size_t len = std::string::npos);
@@ -155,5 +157,7 @@ namespace rumpelstiltskin {
   string randomrootcap();
   //Get a securely random secret usable as argument for create_server
   string randomsecret();
+  //
+  void memclear32(volatile unsigned char *p);
 }
 #endif

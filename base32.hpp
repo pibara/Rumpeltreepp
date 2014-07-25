@@ -1,4 +1,4 @@
-//  Copyright (c) 2012, Rob J Meijer
+//  Copyright (c) 2014, Rob J Meijer
 //
 //Permission is hereby granted, free of charge, to any person or organization
 //obtaining a copy of the software and accompanying documentation covered by
@@ -25,6 +25,7 @@
 #define _BASE32_HPP
 #include <string>
 #include "rumpelstiltskin.hpp"
+/*Base32 encoding, Len is the size of the binary data in bytes*/
 template <int Len>
 rumpelstiltskin::string b32encode(const unsigned char *binary);
 
@@ -46,11 +47,12 @@ rumpelstiltskin::string b32encode<3>(const unsigned char *binary);
 template <>
 rumpelstiltskin::string b32encode<4>(const unsigned char *binary);
 
+
 template <int Len>
 rumpelstiltskin::string b32encode(const unsigned char *binary) {
   return b32encode<5>(binary) + b32encode<Len - 5>(binary+5);
 };
-
+/*Base32 decoding, Len is the size of the binary data in bytes*/
 template <int Len>
 void b32decode(rumpelstiltskin::string const & input,unsigned char *binary);
 
