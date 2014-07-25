@@ -2,7 +2,7 @@
 #include <string.h>
 namespace rumpelstiltskin {
   Server::Server(AbstractServer *s):pImpl(s){}
-  Node Server::operator[](std::string s) const {
+  Node Server::operator[](string s) const {
     return pImpl->operator[](s);
   }
   Node Server::operator()(Node const *n, std::string s) const {

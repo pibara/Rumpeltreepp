@@ -5,24 +5,24 @@
 #include <cryptopp/osrng.h>
 #include "base32.hpp"
 namespace rumpelstiltskin {
-  Server  create_server(std::string mainsecret, std::string cloudsecret) {
+  Server  create_server(string mainsecret, string cloudsecret) {
     return Server(new ConcreteServer(mainsecret,cloudsecret));
   };
-  Client create_client(std::string cloudsecret) {
+  Client create_client(string cloudsecret) {
     return Client(new ConcreteClient(cloudsecret));
   }
-  std::string pass2rootcap(std::string pass) {
+  string pass2rootcap(string pass) {
     unsigned char pcbScratch[CryptoPP::SHA256::DIGESTSIZE];
     CryptoPP::SHA256().CalculateDigest(pcbScratch,reinterpret_cast<const unsigned char *>(pass.c_str()),pass.size());
-    return std::string("rw-") + b32encode<32>(pcbScratch);
+    return string("rw-") + b32encode<32>(pcbScratch);
   }
-  std::string randomrootcap() {
+  string randomrootcap() {
     unsigned char pcbScratch[ 32 ];
     CryptoPP::AutoSeededRandomPool rng;
     rng.GenerateBlock( pcbScratch, 32 );
-    return std::string("rw-") + b32encode<32>(pcbScratch);
+    return string("rw-") + b32encode<32>(pcbScratch);
   }
-  std::string randomsecret() {
+  string randomsecret() {
     unsigned char pcbScratch[ 128 ];
     CryptoPP::AutoSeededRandomPool rng;
     rng.GenerateBlock( pcbScratch,128);

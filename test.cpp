@@ -5,14 +5,14 @@ int main(int argc,char **argv) {
   
   //Get a random secret, normaly this should be used only on installation of a tool using the lib.
   //The secret should than get stored somewhere secure for use whenever the server gets run.
-  std::string secret=rumpelstiltskin::randomsecret();
+  auto secret=rumpelstiltskin::randomsecret();
   std::cout << "secret=" << secret << std::endl;
   //Create the core rumpelstiltskin server object using the secret(s). Here we assume local usage, 
   //for use of cloud storage the create_server function takes a second secret.
   auto server = rumpelstiltskin::create_server(secret);
   //When creating a brand new tree we need to create a root cap first. This function does this
   //securely random using crypto library primitives. Alternatively it could be done with a password.
-  std::string rootcap=rumpelstiltskin::randomrootcap();
+  auto rootcap=rumpelstiltskin::randomrootcap();
   std::cout << "rootcap 1: " << rootcap << std::endl;
   rootcap = rumpelstiltskin::pass2rootcap("knockknock");
   std::cout << "rootcap 2: " << rootcap << std::endl;
@@ -41,7 +41,7 @@ int main(int argc,char **argv) {
   std::cout << "1: cap " << attenuatedchildnode1.cap() << std::endl;
   std::cout << "2: cap " << attenuatedchildnode2.cap() << std::endl;
   auto client = rumpelstiltskin::create_client();
-  std::string as1 = client.attenuate(rootcap);
+  auto as1 = client.attenuate(rootcap);
   std::cout << "client side attenuated cap: " << as1 << std::endl;
   return 0;
 };

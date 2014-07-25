@@ -24,41 +24,42 @@
 #ifndef _BASE32_HPP
 #define _BASE32_HPP
 #include <string>
+#include "rumpelstiltskin.hpp"
 template <int Len>
-std::string b32encode(const unsigned char *binary);
+rumpelstiltskin::string b32encode(const unsigned char *binary);
 
 template <>
-std::string b32encode<5>(const unsigned char *binary);
+rumpelstiltskin::string b32encode<5>(const unsigned char *binary);
 
 template <>
-std::string b32encode<0>(const unsigned char *binary);
+rumpelstiltskin::string b32encode<0>(const unsigned char *binary);
 
 template <>
-std::string b32encode<1>(const unsigned char *binary);
+rumpelstiltskin::string b32encode<1>(const unsigned char *binary);
 
 template <>
-std::string b32encode<2>(const unsigned char *binary);
+rumpelstiltskin::string b32encode<2>(const unsigned char *binary);
 
 template <>
-std::string b32encode<3>(const unsigned char *binary);
+rumpelstiltskin::string b32encode<3>(const unsigned char *binary);
 
 template <>
-std::string b32encode<4>(const unsigned char *binary);
+rumpelstiltskin::string b32encode<4>(const unsigned char *binary);
 
 template <int Len>
-std::string b32encode(const unsigned char *binary) {
+rumpelstiltskin::string b32encode(const unsigned char *binary) {
   return b32encode<5>(binary) + b32encode<Len - 5>(binary+5);
 };
 
 template <int Len>
-void b32decode(std::string input,unsigned char *binary);
+void b32decode(rumpelstiltskin::string input,unsigned char *binary);
 
 template <>
-void b32decode<8>(std::string input,unsigned char *binary);
+void b32decode<8>(rumpelstiltskin::string input,unsigned char *binary);
 
 template <>
-void b32decode<48>(std::string input,unsigned char *binary);
+void b32decode<48>(rumpelstiltskin::string input,unsigned char *binary);
 
 template <>
-void b32decode<52>(std::string input,unsigned char *binary);
+void b32decode<52>(rumpelstiltskin::string input,unsigned char *binary);
 #endif

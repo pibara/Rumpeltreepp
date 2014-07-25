@@ -5,8 +5,8 @@ int main(int argc,char **argv) {
   
   //Get a random secret, normaly this should be used only on installation of a tool using the lib.
   //The secret should than get stored somewhere secure for use whenever the server gets run.
-  std::string secret1=rumpelstiltskin::randomsecret();
-  std::string secret2=rumpelstiltskin::randomsecret();
+  auto secret1=rumpelstiltskin::randomsecret();
+  auto secret2=rumpelstiltskin::randomsecret();
   if (secret1 == secret2) {
      std::cerr << "random secrets are both the same, this is bad news" << std::endl;
      return 1;

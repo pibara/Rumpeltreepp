@@ -2,13 +2,13 @@
 #include <string.h>
 namespace rumpelstiltskin {
   Node::Node(AbstractNode *node,AbstractServer const *server):sServer(server),pImpl(node) {};
-  std::string Node::unattenuated_cap() const {
+  string Node::unattenuated_cap() const {
       return pImpl->unattenuated_cap();
   }
-  std::string Node::attenuated_cap() const {
+  string Node::attenuated_cap() const {
       return pImpl->attenuated_cap();
   }
-  std::string Node::cap() const { 
+  string Node::cap() const { 
     if (pImpl->is_attenuated()) {
        return pImpl->attenuated_cap();
     } else {

@@ -23,7 +23,7 @@
 //DEALINGS IN THE SOFTWARE.
 #include "base32.hpp"
 template <>
-std::string b32encode<5>(const unsigned char *binary) {
+rumpelstiltskin::string b32encode<5>(const unsigned char *binary) {
    char target[9];
    target[0]=(binary[0] >> 3) & 0x01f;
    target[1]=((binary[0] << 2) & 0x01c) | ((binary[1] >> 6) & 0x007);
@@ -41,12 +41,12 @@ std::string b32encode<5>(const unsigned char *binary) {
 };
 
 template <>
-std::string b32encode<0>(const unsigned char *binary) {
+rumpelstiltskin::string b32encode<0>(const unsigned char *binary) {
   return "";
 };
 
 template <>
-std::string b32encode<1>(const unsigned char *binary) {
+rumpelstiltskin::string b32encode<1>(const unsigned char *binary) {
   unsigned char padded[5];
   padded[0]=binary[0];
   padded[1]=padded[2]=padded[3]=padded[4]=0;
@@ -54,7 +54,7 @@ std::string b32encode<1>(const unsigned char *binary) {
 };
 
 template <>
-std::string b32encode<2>(const unsigned char *binary) {
+rumpelstiltskin::string b32encode<2>(const unsigned char *binary) {
   unsigned char padded[5];
   padded[0]=binary[0];
   padded[1]=binary[1];
@@ -63,7 +63,7 @@ std::string b32encode<2>(const unsigned char *binary) {
 };
 
 template <>
-std::string b32encode<3>(const unsigned char *binary) {
+rumpelstiltskin::string b32encode<3>(const unsigned char *binary) {
   unsigned char padded[5];
   padded[0]=binary[0];
   padded[1]=binary[1];
@@ -73,7 +73,7 @@ std::string b32encode<3>(const unsigned char *binary) {
 };
 
 template <>
-std::string b32encode<4>(const unsigned char *binary) {
+rumpelstiltskin::string b32encode<4>(const unsigned char *binary) {
   unsigned char padded[5];
   padded[0]=binary[0];
   padded[1]=binary[1];
@@ -84,7 +84,7 @@ std::string b32encode<4>(const unsigned char *binary) {
 };
 
 template <>
-void b32decode<8>(std::string input,unsigned char *binary) {
+void b32decode<8>(rumpelstiltskin::string input,unsigned char *binary) {
    unsigned char numbers[8];
    for (size_t index=0;index<8;index++) {
       char c=input.c_str()[index];
@@ -103,7 +103,7 @@ void b32decode<8>(std::string input,unsigned char *binary) {
 };
 
 template <>
-void b32decode<48>(std::string input,unsigned char *binary) {
+void b32decode<48>(rumpelstiltskin::string input,unsigned char *binary) {
   b32decode<8>(input.substr(0,8),binary);
   b32decode<8>(input.substr(8,8),binary+5);
   b32decode<8>(input.substr(16,8),binary+10);
@@ -113,7 +113,7 @@ void b32decode<48>(std::string input,unsigned char *binary) {
 };
 
 template <>
-void b32decode<52>(std::string input,unsigned char *binary) {
+void b32decode<52>(rumpelstiltskin::string input,unsigned char *binary) {
   b32decode<48>(input.substr(0,48),binary);
   unsigned char work[5];
   b32decode<8>(input.substr(48,4)+"AAAA",work);

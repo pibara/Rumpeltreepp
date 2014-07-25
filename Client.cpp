@@ -2,10 +2,10 @@
 #include "ConcreteStorage.hpp"
 namespace rumpelstiltskin {
   Client::Client(AbstractClient *p) : pImpl(p){}
-  std::string Client::attenuate(std::string s){
+  string Client::attenuate(string s){
     return pImpl->attenuate(s);
   }
-  Storage Client::storage(std::string cap) {
+  Storage Client::storage(string cap) {
     return pImpl->storage(cap);
   }
 }

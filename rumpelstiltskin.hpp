@@ -25,29 +25,77 @@
 #define _RUMPELSTILTSKIN_HPP
 #include <string>
 #include <memory>
+#include <iostream>
 #include <inttypes.h>
 namespace rumpelstiltskin {
   struct Node;
   struct Server;
   struct AbstractServer;
+  struct string;
+  struct string {
+        string(const std::string &str);
+        string(const std::string& str, size_t pos, size_t len = std::string::npos);
+        string(const char* s);
+        string(const char* s, size_t n);
+        string (size_t n, char c);
+        string(const string &str);
+        string(const string& str, size_t pos, size_t len = std::string::npos);
+        string (string&& str) noexcept;
+        ~string();
+        string& operator= (const string& str);
+        string& operator= (const char* s);
+        string& operator= (char c);
+        string& operator= (string&& str) noexcept;
+        string& operator= (std::string&& str) noexcept;
+        size_t size() const noexcept;
+        size_t length() const noexcept; 
+        void clear() noexcept;
+        bool empty() const noexcept;
+        string& operator+= (const string& str);
+        string& operator+= (const std::string& str);
+        string& operator+= (const char* s);
+        string& operator+= (char c);
+        const char* c_str() const noexcept;
+        string substr (size_t pos = 0, size_t len = std::string::npos) const;
+        operator std::string &();
+        bool operator==(const char *p) const;
+        bool operator==(const std::string s) const;
+        bool operator==(const string) const;
+        bool operator!=(const char *p) const;
+        bool operator!=(const std::string s) const;
+        bool operator!=(const string) const;
+        friend string operator+(const string &, const string &);
+        friend string operator+(const std::string &, const string &);
+        friend string operator+(const string &, const std::string &);
+        friend string operator+(const string &s1, const char *s2);
+        friend std::ostream& operator <<(std::ostream& stream, const string& s);
+    private:
+        void wipe() noexcept;
+        mutable std::string mString;
+  };
+  string operator+(const string &s1, const string &s2);
+  string operator+(const std::string &s1, const string &s2);
+  string operator+(const string &s1, const std::string &s2);
+  string operator+(const string &s1, const char *s2);
+  std::ostream& operator <<(std::ostream& stream, const string& s);
   //When the node designated by a sparse cap as used in this library is serialized, a storage object should indicate
   //where it should be stored and what key should be used to encrypt it. Serialization and encryption are not done by this
   //library and should be done by the user of the library, primary on the server side of things. 
   struct AbstractStorage {
-     virtual std::string path() const = 0; //Get the relative path where this node would have to be serialized.
+     virtual string path() const = 0; //Get the relative path where this node would have to be serialized.
      virtual uint8_t const * const crypto_key() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
   };
   struct Storage : public AbstractStorage {
          Storage(AbstractStorage *);
-         std::string path() const;
+         string path() const;
          uint8_t const * const crypto_key() const;
      private:
          std::unique_ptr<AbstractStorage> pImpl;
   };
   //Node's in the tree
   struct AbstractNode {
-      virtual std::string attenuated_cap() const  = 0;  // Get the sparsecap for attenuated access.
-      virtual std::string unattenuated_cap() const = 0; //Get the sparse-cap for unatenuated access.
+      virtual string attenuated_cap() const  = 0;  // Get the sparsecap for attenuated access.
+      virtual string unattenuated_cap() const = 0; //Get the sparse-cap for unatenuated access.
       virtual Storage storage() const = 0; //Get the relative path where this node would have to be serialized.
       virtual bool is_attenuated() const = 0; //Query if this node is unatenuated or read only.
   };
@@ -57,9 +105,9 @@ namespace rumpelstiltskin {
       Node & operator=(Node &&) = default;
       Node(Node const &) = delete;
       Node & operator=(Node const &) = delete;
-      std::string attenuated_cap() const ;
-      std::string unattenuated_cap() const ;
-      std::string cap() const ; //Convenience method for getting the unattenuated cap if available or the attenuated cap if not.
+      string attenuated_cap() const ;
+      string unattenuated_cap() const ;
+      string cap() const ; //Convenience method for getting the unattenuated cap if available or the attenuated cap if not.
       Storage storage() const ;
       Node operator[](std::string) const ; //Convenience method for getting at child node using weak name. Will throw for client side.
       bool is_attenuated() const;
@@ -71,13 +119,13 @@ namespace rumpelstiltskin {
 
   //Server or File-system side.
   struct AbstractServer {
-      virtual Node operator[](std::string) const = 0; //Get a Node from a sparse-cap string.
+      virtual Node operator[](string) const = 0; //Get a Node from a sparse-cap string.
       virtual Node operator()(Node const *, std::string) const= 0; //Get a child node using a weak name and a parent node.
       virtual Node attenuated(Node const *) const = 0;
   };
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
-      Node operator[](std::string) const;
+      Node operator[](string) const;
       Node operator()(Node const *, std::string) const;
       Node attenuated(Node const *) const;
     private:
@@ -85,27 +133,27 @@ namespace rumpelstiltskin {
   };
   // Client or regular process side.
   struct AbstractClient {
-      virtual std::string attenuate(std::string) =0;
-      virtual Storage storage(std::string) =0; //Don't use this for client side en/decryption without an clear security architecture
+      virtual string attenuate(string) =0;
+      virtual Storage storage(string) =0; //Don't use this for client side en/decryption without an clear security architecture
   };
   struct Client: public AbstractClient {
       Client(AbstractClient *);
-      std::string attenuate(std::string);
-      Storage storage(std::string); //Don't use this for client side en/decryption without an clear security architecture
+      string attenuate(string);
+      Storage storage(string); //Don't use this for client side en/decryption without an clear security architecture
     private:
       std::unique_ptr<AbstractClient> pImpl;
   };
 
   //Function for creating a server object using one or two secrets. Use one secret for local storage or two
   //if you are using any kind of network storage server or service as underlying place to do serialization.
-  Server create_server(std::string mainsecret, std::string cloudsecret="local");
+  Server create_server(string mainsecret, string cloudsecret="local");
   //Create a client object for client side attenuation and decryption.
-  Client create_client(std::string cloudsecret="local");
+  Client create_client(string cloudsecret="local");
   //Turn a password of kinds into a suitable root cap for a tree.
-  std::string pass2rootcap(std::string pass);
+  string pass2rootcap(string pass);
   //Get a securely random suitable root cap for a tree.
-  std::string randomrootcap();
+  string randomrootcap();
   //Get a securely random secret usable as argument for create_server
-  std::string randomsecret();
+  string randomsecret();
 }
 #endif

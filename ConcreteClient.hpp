@@ -6,9 +6,9 @@
 #include "ConcreteServer.hpp"
 namespace rumpelstiltskin {
   struct ConcreteClient : public AbstractClient {
-      ConcreteClient(std::string cloudsecret);
-      std::string attenuate(std::string uacap);
-      Storage storage(std::string);
+      ConcreteClient(string cloudsecret);
+      string attenuate(string uacap);
+      Storage storage(string);
      private:
       ConcreteServer const mFakeServer;
   };
