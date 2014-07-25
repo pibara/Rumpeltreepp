@@ -96,7 +96,7 @@ rumpelstiltskin::string b32encode<4>(const unsigned char *binary) {
 
 /*Map 8 encoded characters back to 5 binary bytes*/
 template <>
-void b32decode<8>(rumpelstiltskin::string const & input,unsigned char *binary) {
+void b32decode<5>(rumpelstiltskin::string const & input,unsigned char *binary) {
    unsigned char numbers[8];
    for (size_t index=0;index<8;index++) {
       char c=input.c_str()[index];
@@ -116,26 +116,20 @@ void b32decode<8>(rumpelstiltskin::string const & input,unsigned char *binary) {
 
 /*7 back to 4*/
 template <>
-void b32decode<7>(rumpelstiltskin::string const & input,unsigned char *binary) {
+void b32decode<4>(rumpelstiltskin::string const & input,unsigned char *binary) {
     unsigned char work[5];
-    b32decode<8>(input.substr(0,7)+"A",work);
+    b32decode<5>(input.substr(0,7)+"A",work);
     binary[0]=work[0];
     binary[1]=work[1];
     binary[2]=work[2];
     binary[3]=work[3];
 };
 
-/*6 is bogus, discard the last one*/
-template <>
-void b32decode<6>(rumpelstiltskin::string const & input,unsigned char *binary) {
-    b32decode<5>(input,binary); //6 is an invalid length, ignore last character.
-};
-
 /*5 back to 3*/
 template <>
-void b32decode<5>(rumpelstiltskin::string const & input,unsigned char *binary) {
+void b32decode<3>(rumpelstiltskin::string const & input,unsigned char *binary) {
     unsigned char work[5];
-    b32decode<8>(input.substr(0,5)+"AAA",work);
+    b32decode<5>(input.substr(0,5)+"AAA",work);
     binary[0]=work[0];
     binary[1]=work[1];
     binary[2]=work[2];
@@ -143,31 +137,21 @@ void b32decode<5>(rumpelstiltskin::string const & input,unsigned char *binary) {
 
 /*4 back to 2*/
 template <>
-void b32decode<4>(rumpelstiltskin::string const & input,unsigned char *binary) {
+void b32decode<2>(rumpelstiltskin::string const & input,unsigned char *binary) {
     unsigned char work[5];
-    b32decode<8>(input.substr(0,4)+"AAAA",work);
+    b32decode<5>(input.substr(0,4)+"AAAA",work);
     binary[0]=work[0];
     binary[1]=work[1];
 };
 
-/* 3 is bogus, discard one*/
-template <>
-void b32decode<3>(rumpelstiltskin::string const & input,unsigned char *binary) {
-    b32decode<2>(input,binary); //2 is an invalid length, ignore last character.
-};
-
 /*2 back to 1*/
 template <>
-void b32decode<2>(rumpelstiltskin::string const & input,unsigned char *binary) {
+void b32decode<1>(rumpelstiltskin::string const & input,unsigned char *binary) {
     unsigned char work[5];
-    b32decode<8>(input.substr(0,2)+"AAAAAA",work);
+    b32decode<5>(input.substr(0,2)+"AAAAAA",work);
     binary[0]=work[0];
 
 };
-
-/*1 is bogus, discard*/
-template <>
-void b32decode<1>(rumpelstiltskin::string const & input,unsigned char *binary) {};
 
 /* 0 for completeness*/
 template <>

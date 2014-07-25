@@ -44,12 +44,12 @@ namespace rumpelstiltskin {
     }
 
     void ConcreteServer::rotostoragekey(string rocap,uint8_t *storagekey) const {
-        b32decode<52>(rocap.substr(3,52),storagekey);
+        b32decode<32>(rocap.substr(3,52),storagekey);
     }
 
     string ConcreteServer::rwtoro(string rwcap,uint8_t *storagekey) const {
         uint8_t rwkey[32];
-        b32decode<52>(rwcap.substr(3,52),rwkey);
+        b32decode<32>(rwcap.substr(3,52),rwkey);
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(rwkey,32);
         std::string data= "read-only::nosalt";
         hmac.CalculateDigest(storagekey,reinterpret_cast<const unsigned char *>(data.c_str()),data.size());        
