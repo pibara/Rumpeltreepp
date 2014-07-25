@@ -55,11 +55,36 @@ template <int Len>
 void b32decode(rumpelstiltskin::string input,unsigned char *binary);
 
 template <>
+void b32decode<0>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<1>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<2>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<3>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<4>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<5>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<6>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
+void b32decode<7>(rumpelstiltskin::string input,unsigned char *binary);
+
+template <>
 void b32decode<8>(rumpelstiltskin::string input,unsigned char *binary);
 
-template <>
-void b32decode<48>(rumpelstiltskin::string input,unsigned char *binary);
+template <int Len>
+void b32decode(rumpelstiltskin::string input,unsigned char *binary) {
+    b32decode<8>(input,binary);
+    b32decode<Len - 8>(input.substr(8,input.size()-8),binary + 8);
+}
 
-template <>
-void b32decode<52>(rumpelstiltskin::string input,unsigned char *binary);
 #endif

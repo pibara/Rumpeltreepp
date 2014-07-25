@@ -103,6 +103,43 @@ void b32decode<8>(rumpelstiltskin::string input,unsigned char *binary) {
 };
 
 template <>
+void b32decode<7>(rumpelstiltskin::string input,unsigned char *binary) {
+
+};
+
+template <>
+void b32decode<6>(rumpelstiltskin::string input,unsigned char *binary) {
+    b32decode<5>(input,binary); //6 is an invalid length, ignore last character.
+};
+
+template <>
+void b32decode<5>(rumpelstiltskin::string input,unsigned char *binary) {
+
+};
+
+template <>
+void b32decode<4>(rumpelstiltskin::string input,unsigned char *binary) {
+
+};
+
+template <>
+void b32decode<3>(rumpelstiltskin::string input,unsigned char *binary) {
+    b32decode<2>(input,binary); //2 is an invalid length, ignore last character.
+};
+
+template <>
+void b32decode<2>(rumpelstiltskin::string input,unsigned char *binary) {
+
+};
+
+template <>
+void b32decode<1>(rumpelstiltskin::string input,unsigned char *binary) {};
+
+template <>
+void b32decode<0>(rumpelstiltskin::string input,unsigned char *binary) {};
+
+
+template <>
 void b32decode<48>(rumpelstiltskin::string input,unsigned char *binary) {
   b32decode<8>(input.substr(0,8),binary);
   b32decode<8>(input.substr(8,8),binary+5);
