@@ -4,7 +4,7 @@
 int main(int argc,char **argv) {
   for (int i=0;i<100000;i++) {  
     auto secret=rumpelstiltskin::randomsecret();
-    auto server = rumpelstiltskin::create_server(secret);
+/*    auto server = rumpelstiltskin::create_server(secret);
     auto rootcap=rumpelstiltskin::randomrootcap();
     rootcap = rumpelstiltskin::pass2rootcap("knockknock");
     auto rootnode = server[rootcap];
@@ -16,6 +16,6 @@ int main(int argc,char **argv) {
     auto storage1 = attenuatedchildnode1.storage();
     auto storage2 = attenuatedchildnode2.storage();
     auto client = rumpelstiltskin::create_client();
-    auto as1 = client.attenuate(rootcap);
+    auto as1 = client.attenuate(rootcap);*/
   }
 };

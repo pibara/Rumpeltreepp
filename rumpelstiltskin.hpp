@@ -86,6 +86,7 @@ namespace rumpelstiltskin {
   struct AbstractStorage {
      virtual string path() const = 0; //Get the relative path where this node would have to be serialized.
      virtual uint8_t const * const crypto_key() const = 0; //Get raw pointer to the binary crypto key to use for serialisation.
+     virtual ~AbstractStorage() {}
   };
   struct Storage : public AbstractStorage {
          Storage(AbstractStorage *);
@@ -100,6 +101,7 @@ namespace rumpelstiltskin {
       virtual string unattenuated_cap() const = 0; //Get the sparse-cap for unatenuated access.
       virtual Storage storage() const = 0; //Get the relative path where this node would have to be serialized.
       virtual bool is_attenuated() const = 0; //Query if this node is unatenuated or read only.
+      virtual ~AbstractNode() {}
   };
   struct Node : public AbstractNode {
       Node(AbstractNode *,AbstractServer const *);
@@ -124,6 +126,7 @@ namespace rumpelstiltskin {
       virtual Node operator[](string const &) const = 0; //Get a Node from a sparse-cap string.
       virtual Node operator()(Node const *, std::string const &) const= 0; //Get a child node using a weak name and a parent node.
       virtual Node attenuated(Node const *) const = 0;
+      virtual ~AbstractServer() {}
   };
   struct Server: public AbstractServer {
       Server(AbstractServer *s);
@@ -137,6 +140,7 @@ namespace rumpelstiltskin {
   struct AbstractClient {
       virtual string attenuate(string const &) const =0;
       virtual Storage storage(string const &) const =0; //Don't use this for client side en/decryption without an clear security architecture
+      virtual ~AbstractClient() {}
   };
   struct Client: public AbstractClient {
       Client(AbstractClient *);
