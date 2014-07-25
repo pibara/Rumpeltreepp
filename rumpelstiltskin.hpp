@@ -53,6 +53,10 @@ namespace rumpelstiltskin {
   };
   struct Node : public AbstractNode {
       Node(AbstractNode *,AbstractServer const *);
+      Node(Node &&) = default;
+      Node & operator=(Node &&) = default;
+      Node(Node const &) = delete;
+      Node & operator=(Node const &) = delete;
       std::string attenuated_cap() const ;
       std::string unattenuated_cap() const ;
       std::string cap() const ; //Convenience method for getting the unattenuated cap if available or the attenuated cap if not.
