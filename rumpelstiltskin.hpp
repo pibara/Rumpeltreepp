@@ -157,7 +157,7 @@ namespace rumpelstiltskin {
   string randomrootcap();
   //Get a securely random secret usable as argument for create_server
   string randomsecret();
-  //
+  //Utility function, mostly for library internal usage, we may move it out oth the API later.
   void memclear32(volatile unsigned char *p);
 }
 #endif
