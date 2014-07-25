@@ -11,8 +11,8 @@ int main(int argc,char **argv) {
      std::cerr << "random secrets are both the same, this is bad news" << std::endl;
      return 1;
   }
-  auto server1 = rumpelstiltskin::create_server(secret1);
-  auto server2 = rumpelstiltskin::create_server(secret2);
+  auto server1 = rumpelstiltskin::create_server(secret1,secret1);
+  auto server2 = rumpelstiltskin::create_server(secret2,secret2);
   auto rootcap = rumpelstiltskin::pass2rootcap("knockknock");
   auto rootnode1 = server1[rootcap];
   auto rootnode2 = server2[rootcap];
@@ -28,8 +28,8 @@ int main(int argc,char **argv) {
   }
   auto storage1 = rootnode1.storage();
   auto storage2 = rootnode2.storage();
-  if (storage1.path() != storage2.path()) {
-       std::cerr << "Different storage paths for different secrets, this is not OK!" << std::endl;
+  if (storage1.path() == storage2.path()) {
+       std::cerr << "Different storage paths for different cloud secrets, this is not OK!" << std::endl;
        return 4;
   }
   return 0;

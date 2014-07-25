@@ -10,10 +10,15 @@ For a description of what this library does, please have a look at these two blo
 
 Please have a look at test.cpp to view how the API is  coming along.
 
-RumpelTree++ is still very much a work in progress, primaraly still lacking a few essential tests,  
-that for that  reason you should not yet be usingin production systems yet. 
-I hope to release a fully tested release in the comming weeks, but the current version should at least 
-be sufficient to play around with, and possibly suplying me with feedback on the API.
+RumpelTree++ is still very much a work in progress, while functionaly complete and tested, I'm currently
+trying to track down a memory leak in the library, most likely related to my attempts to create
+a user friendly string that is suitable for storing sensitive information in a way that prevents
+temporary tokens from lingering in process or system memory.  
+As a result of this memory leak you should not yet be usingin production systems yet. 
+
+I hope to release a patched (and documented) version in the comming weeks. 
+
+The current version should at least be sufficient to play around with, and possibly suplying me with feedback on the API.
 
 To build you will need to:
 
