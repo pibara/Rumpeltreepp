@@ -13,8 +13,8 @@ namespace rumpelstiltskin {
       void rotostoragekey(string rocap,uint8_t *storagekey) const;
       string rwtoro(string rwcap,uint8_t *storagekey) const;
       string rotostoragepath(uint8_t *storagekey) const;
-      string mMainSecret;
-      string mCloudSecret;
+      string const mMainSecret;
+      string const mCloudSecret; 
   };
 }
 #endif

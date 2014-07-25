@@ -1,4 +1,3 @@
-* check const correctness
 * write more complete set of tests
 * more comments in code
 * check for memory leaks

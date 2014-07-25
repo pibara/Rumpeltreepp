@@ -52,39 +52,39 @@ rumpelstiltskin::string b32encode(const unsigned char *binary) {
 };
 
 template <int Len>
-void b32decode(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<0>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<0>(rumpelstiltskin::string const &input,unsigned char *binary);
 
 template <>
-void b32decode<1>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<1>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<2>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<2>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<3>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<3>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<4>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<4>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<5>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<5>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<6>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<6>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<7>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<7>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <>
-void b32decode<8>(rumpelstiltskin::string input,unsigned char *binary);
+void b32decode<8>(rumpelstiltskin::string const & input,unsigned char *binary);
 
 template <int Len>
-void b32decode(rumpelstiltskin::string input,unsigned char *binary) {
+void b32decode(rumpelstiltskin::string const & input,unsigned char *binary) {
     b32decode<8>(input,binary);
-    b32decode<Len - 8>(input.substr(8,input.size()-8),binary + 8);
+    b32decode<Len - 8>(input.substr(8,input.size()-8),binary + 5);
 }
 
 #endif

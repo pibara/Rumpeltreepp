@@ -133,13 +133,13 @@ namespace rumpelstiltskin {
   };
   // Client or regular process side.
   struct AbstractClient {
-      virtual string attenuate(string) =0;
-      virtual Storage storage(string) =0; //Don't use this for client side en/decryption without an clear security architecture
+      virtual string attenuate(string) const =0;
+      virtual Storage storage(string) const =0; //Don't use this for client side en/decryption without an clear security architecture
   };
   struct Client: public AbstractClient {
       Client(AbstractClient *);
-      string attenuate(string);
-      Storage storage(string); //Don't use this for client side en/decryption without an clear security architecture
+      string attenuate(string) const;
+      Storage storage(string) const; //Don't use this for client side en/decryption without an clear security architecture
     private:
       std::unique_ptr<AbstractClient> pImpl;
   };

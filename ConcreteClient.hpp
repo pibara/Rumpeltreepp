@@ -7,8 +7,8 @@
 namespace rumpelstiltskin {
   struct ConcreteClient : public AbstractClient {
       ConcreteClient(string cloudsecret);
-      string attenuate(string uacap);
-      Storage storage(string);
+      string attenuate(string uacap) const;
+      Storage storage(string) const;
      private:
       ConcreteServer const mFakeServer;
   };
