@@ -100,7 +100,9 @@ Next to this, you will need to inform your build system about the fact that your
 <p>RumpleTree++ deels with sparse caps. These sparse caps are basically strings that potentialy hold tremendous authority. Given that its best to minimize the risks of holding this authority, RumpelTree++ comes with its own string class rumpelstiltskin::string that should be close to a drop-in replacement for std::string.
 The rumpelstiltskin::string class is basically a RAIIish like wrapper for std::string that clears the content of the wrapped string prior to destruction. By doing this, the lifetime of the spare caps in process memory is limited to the logical lifetime of the strings in your program. This while when using std::string for such strings, the spare caps may linger in process memory for quite some time, and may end up in uninitialized memory allocated to other parts of your program, what from a least authority perspective is a bad idea. It is strongly suggested that when your programs handles sparse caps outside of the direct RumpelTree++ context, it use rumpelstiltskin::string to store them.
 </p>
-
+<p>
+Mostly when using RumpelTree++ you won't have to concern yourself about the difference between rumpelstiltskin::string and std::string. The use of the C++11 auto keyword should hide this from you for the most part, and the interface of rumpelstiltskin::string is sufficiently similar to that of std::string so that you should hardly notice it in &gt;90% of cases.
+</p>
 <p>
 Next to rumpelstiltskin::string, RumpelTree++ also comes with a convenience function for wiping 32 byte long representations of encryption keys (that we shall discuss later). If for some reason you need to copy an encryption key out of a RumpelTree++ object, its suggested you wrap this key inh a RAII object and invoke this convenience function from its destructor.
 </p>
@@ -113,17 +115,65 @@ Next to rumpelstiltskin::string, RumpelTree++ also comes with a convenience func
 </p>
 
 <h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Server side usage.</h3>
-
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Server side usage.</h2>
 <p>
-
+The Rumpelstiltskin Tree-graph sparsecap algorithm supports some operations to only be performed on the server side, while other operations may for scalability and performance reasons also be done on the client side. If you are building a server or a file-system you may opt to ignore the whole concept of client side operations, or you may build in facilities that allow a select set of operations to also be performed client side. The following sections describe the RumpelTree++ operations for the server side. 
 </p>
 
 <h3>
 <a name="secrets" class="anchor" href="#secrets"><span class="octicon octicon-link"></span></a>Secrets</h3>
 
-<p></p>
+<p>
+The server itself needs one or two secrets:
+<ul>
+<li>A private secret</li>
+<li>An optional cloud secret, possibly shared with its clients.</li>
+</ul>
+Its important to note that the cloud secret is the secret used to get from an attenuated authority cap to a storage key. 
+Giving clients access to the cloud key, together with giving them read-only access to storage-key indexed encrypted serialized node storage,
+could allow client side decryption to be implemented, potentially ofloading the server (or file-system) from its decryption tasks and thus 
+contributing to better scalability. By default no cloud secret will be used, and read-only access to storage-key indexed encrypted serialized 
+node storage would allow anyone with a valid sparse cap decryption access to that node.<br><br>RumpelTree++ offers a convenience function for
+creating a secret for use by the server part of the library. 
+</p>
 
+<p>
+<pre><code>
+auto secret=rumpelstiltskin::randomsecret();
+</code></pre>
+</p>
+<p>
+This function should only be used at first use of your server or during installation. This secret should be stored in a place where only your server of file-system is able to access it with strict access controll allowing your server and only your server to access it during normal system operations. Whenever the server is restarted, the secret should be retreived from this tightly protected file. We can now create a base server object for our server omplementation to use:
+</p>
+<p>
+<pre><code>
+auto server=rumpelstiltskin::create_server(secret);
+</code></pre>
+</p>
+or:
+<p>
+<pre><code>
+auto server=rumpelstiltskin::create_server(secret,cloudsecret);
+</code></pre>
+</p>
+<p>
+One of the core concepts of the Rumpelstiltskin Tree-graph sparsecap algorithm is the unattenuated root sparsecap. 
+The fun thing is, we can have many roots and in order to create a new root, we can either just make one up, or generate one from a password.
+</p>
+<p>
+<pre><code>
+auto randomrootcap=rumpelstiltskin::randomrootcap();
+auto personalrootcap=rumpelstiltskin::pass2rootcap("KnockKnockItsMeAg41n"); 
+</code></pre>
+</p>
+<p>
+Once we have a root cap or any cap for that matter, we can get to one of the node's of our tree.
+</p>
+<p>
+<pre><code>
+auto rootnode=server[personalrootcap];
+</code></pre>
+</p>
 <h3>
 <a name="decomposition" class="anchor" href="#decomposition"><span class="octicon octicon-link"></span></a>Decomposition and child nodes.</h3>
 
