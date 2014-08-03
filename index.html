@@ -138,22 +138,19 @@ creating a secret for use by the server part of the library.
 </p>
 
 <p>
-<pre><code>
-auto secret=rumpelstiltskin::randomsecret();
+<pre><code>auto secret=rumpelstiltskin::randomsecret();
 </code></pre>
 </p>
 <p>
 This function should only be used at first use of your server or during installation. This secret should be stored in a place where only your server of file-system is able to access it with strict access controll allowing your server and only your server to access it during normal system operations. Whenever the server is restarted, the secret should be retreived from this tightly protected file. We can now create a base server object for our server omplementation to use:
 </p>
 <p>
-<pre><code>
-auto server=rumpelstiltskin::create_server(secret);
+<pre><code>auto server=rumpelstiltskin::create_server(secret);
 </code></pre>
 </p>
 or:
 <p>
-<pre><code>
-auto server=rumpelstiltskin::create_server(secret,cloudsecret);
+<pre><code>auto server=rumpelstiltskin::create_server(secret,cloudsecret);
 </code></pre>
 </p>
 <p>
@@ -161,8 +158,7 @@ One of the core concepts of the Rumpelstiltskin Tree-graph sparsecap algorithm i
 The fun thing is, we can have many roots and in order to create a new root, we can either just make one up, or generate one from a password.
 </p>
 <p>
-<pre><code>
-auto randomrootcap=rumpelstiltskin::randomrootcap();
+<pre><code>auto randomrootcap=rumpelstiltskin::randomrootcap();
 auto personalrootcap=rumpelstiltskin::pass2rootcap("KnockKnockItsMeAg41n"); 
 </code></pre>
 </p>
@@ -170,24 +166,45 @@ auto personalrootcap=rumpelstiltskin::pass2rootcap("KnockKnockItsMeAg41n");
 Once we have a root cap or any cap for that matter, we can get to one of the node's of our tree.
 </p>
 <p>
-<pre><code>
-auto rootnode=server[personalrootcap];
+<pre><code>auto rootnode=server[personalrootcap];
 </code></pre>
 </p>
 <h3>
 <a name="decomposition" class="anchor" href="#decomposition"><span class="octicon octicon-link"></span></a>Decomposition and child nodes.</h3>
 
-<p></p>
-
+<p>Once we have a node object, its possible to get at any of its child nodes using the locally unique name of the child. A node could have one child named 'bob' and an
+other child named 'allice', but no two children named 'bob'. After we get at the child node naed 'bob' we can request the sparsecap to designate that node.</p>
+</p>
+<p>
+<pre><code>auto childnode=rootnode["bob"];
+auto childcap=childnode.cap();
+</code></pre>
+</p>
+<p>It is essential to note that decomposition is purely a server side operation. While other operations like attenuation and decryption may be done client side, the algorithm used by RumpleTree++ does not allow for client side decomposition.
 <h3>
 <a name="attenuation" class="anchor" href="#attenuation"><span class="octicon octicon-link"></span></a>Attenuation.</h3>
 
-<p></p>
+<p>Next to decomposition and getting at the sparse caps for child nodes, we can also use single attenuation. Its important to note that this single 
+attenuation is deep attenuation. You can use an attenuated authority sparse cap for a parent to gain access to an attenuated authority sparse cap 
+for any of its children. Its also important to not that attenuation of decomposition yields the exact same sparse caps as decomposition of attentuation does.
+Getting an attenuated authority sparsecap is done like:</p>
+</p>
+<p>
+<pre><code>auto attenuatedrootnode=rootnode.attenuated();
+auto attenuatedrootcap=attenuatedrootnode.cap();
+</code></pre>
+</p>
 
 <h3>
 <a name="storage" class="anchor" href="#storage"><span class="octicon octicon-link"></span></a>Encrypted storage.</h3>
 
-<p></p>
+<p>While we could just make up root node sparse caps or generate them from a password, the actual node's in the DAG need to be persistently stored somewhere, and this storage should probably be done encrypted. For this, RumpelTree++ has the concept of storage objects. Each node can be mapped to a storage object, and this storage objact holds both a storage key designating some kind of location for the encrypted storage of the serialization of the node, and an encryption key that is to be used for encryption and decryption of the serialized node's. Its important to note that neither encryption nor storage are part of the RumpelTree++ functionality. Its up to the application implementing the actual server or file-system to take care of storage and encryption. RumpelTree++ simply provides node encryption keys and file-system friendly storage keys.</p>
+<p>
+<pre><code>auto rootstorage=rootnode.storage() ;
+auto rawstorage=rumpelstiltskin::string("/var/rumpelstilskinfs/rawdata/") + rootstorage.storage();
+auto cryptokey =rootstorage.crypto_key()
+</code></pre>
+</p>
 
 <h2>
 <a name="cs-usage" class="anchor" href="#cs-usage"><span class="octicon octicon-link"></span></a>Client side usage.</h3>
