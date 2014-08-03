@@ -239,9 +239,9 @@ auto cryptokey =rootstorage.crypto_key();
 </p>
 <h3>
 <a name="cs-caution" class="anchor" href="#cs-caution"><span class="octicon octicon-link"></span></a>A word of caution</h3>
-If reading the above section, you are tempted to consider client side encryption, as the API seems to allow for it, a word of <b>extreme caution</b>: In order to do client side encryption, each client would need
+If reading the above section, you are tempted to consider client side encryption, as the API seems to allow for it, a word of <b>"extreme"</b> caution": In order to do client side encryption, each client would need
 to have read/write access to encrypted node-serialization storage. The most obvious way to implement such a thing would be introducing shared mutable access to a remote
-file system. Its esential to note that while client-side decryption can be a really good concept, client side decryption with the Rumpelstiltskin Tree-graph sparsecap algorithm does not only violate the principle of least authority by introducing shared mutable state, it also opens up a priviledge escalation issue, allowing clients with an attenuated authority sparse cap to gain unattenuated access to the serialized node data. As a result of this its extremely important to convey the fact that i<b>client side encryption combined with RumpelTree++ should be considered the mother of all bad ideas</b>. 
+file system. Its esential to note that while client-side decryption can be a really good concept, client side decryption with the Rumpelstiltskin Tree-graph sparsecap algorithm does not only violate the principle of least authority by introducing shared mutable state, it also opens up a priviledge escalation issue, allowing clients with an attenuated authority sparse cap to gain unattenuated access to the serialized node data. As a result of this its extremely important to convey the fact that <b>"client side encryption combined with RumpelTree++ should be considered the mother of all bad ideas"</b>. 
       </section>
 
     </div>
