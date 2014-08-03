@@ -40,7 +40,7 @@
         <h3>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h3>
 <p>
-RumpelTree++ is a C++11 implementation of the <A HREF="">Rumpelstiltskin Tree-graph sparsecap algorithm</A>. This algorithm allows any decomposable singly-attenuable Directional Acyclic Graph (DAG) structured authority graph to use <A HREF="http://c2.com/cgi/wiki?PasswordCapabilityModel">sparse capabilities</A> as tokens of authority for potentially singly-attenuated sub-graphs.The algorithm imposes storage and encryption keys to be used for the serialisation of DAG nodes. While the RumpelTree++ was written primary for use in the upcomming RumpelstiltskinFS, a sparse friendly encrypted rewrite of one of the core <A HREF="http://www.linuxjournal.com/magazine/minorfs">MinorFS</A> user-space file systems. The prima advantage of this algoritm for RumpelstiltskinFS is that it removes the need of any lookup table like the sqlite database used in the earlier MinorFS solution. The library and the algorithm were both written and designed with RRumpelstiltskinFS in mind, but they should be usable in a much wider range of situations, including as basis for <A HREF="http://www.w3.org/TR/capability-urls/">capability URLs</A>.  
+RumpelTree++ is a C++11 implementation of the <A HREF="http://minorfs.wordpress.com/2014/03/21/rumpelstiltskin-and-his-children-part-2/">Rumpelstiltskin Tree-graph sparsecap algorithm</A>. This algorithm allows any decomposable singly-attenuable Directional Acyclic Graph (DAG) structured authority graph to use <A HREF="http://c2.com/cgi/wiki?PasswordCapabilityModel">sparse capabilities</A> as tokens of authority for potentially singly-attenuated sub-graphs.The algorithm imposes storage and encryption keys to be used for the serialisation of DAG nodes. While the RumpelTree++ was written primary for use in the upcomming RumpelstiltskinFS, a sparse friendly encrypted rewrite of one of the core <A HREF="http://www.linuxjournal.com/magazine/minorfs">MinorFS</A> user-space file systems. The prima advantage of this algoritm for RumpelstiltskinFS is that it removes the need of any lookup table like the sqlite database used in the earlier MinorFS solution. The library and the algorithm were both written and designed with RRumpelstiltskinFS in mind, but they should be usable in a much wider range of situations, including as basis for <A HREF="http://www.w3.org/TR/capability-urls/">capability URLs</A>.  
 </p>
 <h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
@@ -80,22 +80,44 @@ in a major way.
 <a name="header" class="anchor" href="#header"><span class="octicon octicon-link"></span></a>General usage</h2>
 
 <p>
-
+In order to use RumpelTree++ in your code, you should include the Rumpelstiltskin header file to your C++ code.
 </p>
 <p>
 <pre><code>#include &lt;rumpelstiltskin.hpp&gt;
 </code></pre>
 </p>
 
+<p>
+Next to this, you will need to inform your build system about the fact that your application needs to be linked against the rumpeltree++ library. If you are using CMake, this should be done something like:
+</p>
+<p>
+<pre><code>target_link_libraries(yourapp rumpeltree++)
+</code></pre>
+</p>
 <h3>
 <a name="strings" class="anchor" href="#strings"><span class="octicon octicon-link"></span></a>Strings</h3>
 
-<p></p>
+<p>RumpleTree++ deels with sparse caps. These sparse caps are basically strings that potentialy hold tremendous authority. Given that its best to minimize the risks of holding this authority, RumpelTree++ comes with its own string class rumpelstiltskin::string that should be close to a drop-in replacement for std::string.
+The rumpelstiltskin::string class is basically a RAIIish like wrapper for std::string that clears the content of the wrapped string prior to destruction. By doing this, the lifetime of the spare caps in process memory is limited to the logical lifetime of the strings in your program. This while when using std::string for such strings, the spare caps may linger in process memory for quite some time, and may end up in uninitialized memory allocated to other parts of your program, what from a least authority perspective is a bad idea. It is strongly suggested that when your programs handles sparse caps outside of the direct RumpelTree++ context, it use rumpelstiltskin::string to store them.
+</p>
+
+<p>
+Next to rumpelstiltskin::string, RumpelTree++ also comes with a convenience function for wiping 32 byte long representations of encryption keys (that we shall discuss later). If for some reason you need to copy an encryption key out of a RumpelTree++ object, its suggested you wrap this key inh a RAII object and invoke this convenience function from its destructor.
+</p>
+
+<p>
+<pre><code>YourClass::~YourClass() {
+     rumpelstiltskin::memclear32(mKey);
+}
+</code></pre>
+</p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Server side usage.</h3>
 
-<p></p>
+<p>
+
+</p>
 
 <h3>
 <a name="secrets" class="anchor" href="#secrets"><span class="octicon octicon-link"></span></a>Secrets</h3>
