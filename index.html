@@ -40,7 +40,7 @@
         <h3>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h3>
 <p>
-RumpelTree++ is a C++11 implementation of the <A HREF="http://minorfs.wordpress.com/2014/03/21/rumpelstiltskin-and-his-children-part-2/">Rumpelstiltskin Tree-graph sparsecap algorithm</A>. This algorithm allows any decomposable singly-attenuable Directional Acyclic Graph (DAG) structured authority graph to use <A HREF="http://c2.com/cgi/wiki?PasswordCapabilityModel">sparse capabilities</A> as tokens of authority for potentially singly-attenuated sub-graphs.The algorithm imposes storage and encryption keys to be used for the serialisation of DAG nodes. While the RumpelTree++ was written primary for use in the upcomming RumpelstiltskinFS, a sparse friendly encrypted rewrite of one of the core <A HREF="http://www.linuxjournal.com/magazine/minorfs">MinorFS</A> user-space file systems. The prima advantage of this algoritm for RumpelstiltskinFS is that it removes the need of any lookup table like the sqlite database used in the earlier MinorFS solution. The library and the algorithm were both written and designed with RRumpelstiltskinFS in mind, but they should be usable in a much wider range of situations, including as basis for <A HREF="http://www.w3.org/TR/capability-urls/">capability URLs</A>.  
+RumpelTree++ is a C++11 implementation of the <A HREF="http://minorfs.wordpress.com/2014/03/21/rumpelstiltskin-and-his-children-part-2/">Rumpelstiltskin Tree-graph sparsecap algorithm</A>. This algorithm allows any decomposable singly-attenuable Directional Acyclic Graph (DAG) structured authority graph to use <A HREF="http://c2.com/cgi/wiki?PasswordCapabilityModel">sparse capabilities</A> as tokens of authority for potentially singly-attenuated sub-graphs.The algorithm imposes storage and encryption keys to be used for the serialisation of DAG nodes. While the RumpelTree++ was written primarily for use in the upcoming RumpelstiltskinFS, a sparse friendly encrypted rewrite of one of the core <A HREF="http://www.linuxjournal.com/magazine/minorfs">MinorFS</A> user-space file systems. The prima advantage of this algorithm for RumpelstiltskinFS is that it removes the need of any lookup table like the sqlite database used in the earlier MinorFS solution. The library and the algorithm were both written and designed with RumpelstiltskinFS in mind, but they should be usable in a much wider range of situations, including as basis for <A HREF="http://www.w3.org/TR/capability-urls/">capability URLs</A>.  
 </p>
 <h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
@@ -62,9 +62,9 @@ $ sudo make install
 <h3>
 <a name="peer-review" class="anchor" href="#peer-review"><span class="octicon octicon-link"></span></a>Peer review.</h3>
 
-<p>Currently RumpelTree++ is a one-man project, and while the author has over a decade of experienc with secure coding practices, recent events
-like heartblead have shown the importance of peer review of security sensitive code. The <a href="https://github.com/pibara">author</a> of RumpelTree++ 
-is currently looking for anyone with knowledge on at least two of the folowing subjects to contribute a peer review to this project:
+<p>Currently RumpelTree++ is a one-man project, and while the author has over a decade of experience with secure coding practices, recent events
+like heartbleed have shown the importance of peer review of security sensitive code. The <a href="https://github.com/pibara">author</a> of RumpelTree++ 
+is currently looking for anyone with knowledge on at least two of the following subjects to contribute a peer review to this project:
 <ul>
 <li>C++11</li>
 <li>Capability based security</li>
@@ -72,7 +72,7 @@ is currently looking for anyone with knowledge on at least two of the folowing s
 </ul>
 RumpelTree++ is likely to become a crucial part of the TCB for a remastered Ubuntu distribution aiming to be 100% trojan-resistant. Given the pivotal role 
 RumpelTree++ would play in this system, its of the highest importance that there are no security bugs or crypto fuck-ups in the library. If anyone is willing 
-and able to contribute a peer review to this project, your contributions shall be highly appreciated and will benefit the creation of a trojan resistant envinronment 
+and able to contribute a peer review to this project, your contributions shall be highly appreciated and will benefit the creation of a trojan resistant environment 
 in a major way.
 </p>
 
@@ -97,7 +97,7 @@ Next to this, you will need to inform your build system about the fact that your
 <h3>
 <a name="strings" class="anchor" href="#strings"><span class="octicon octicon-link"></span></a>Strings</h3>
 
-<p>RumpleTree++ deels with sparse caps. These sparse caps are basically strings that potentialy hold tremendous authority. Given that its best to minimize the risks of holding this authority, RumpelTree++ comes with its own string class rumpelstiltskin::string that should be close to a drop-in replacement for std::string.
+<p>RumpleTree++ deals with sparse caps. These sparse caps are basically strings that potentially hold tremendous authority. Given that its best to minimize the risks of holding this authority, RumpelTree++ comes with its own string class rumpelstiltskin::string that should be close to a drop-in replacement for std::string.
 The rumpelstiltskin::string class is basically a RAIIish like wrapper for std::string that clears the content of the wrapped string prior to destruction. By doing this, the lifetime of the spare caps in process memory is limited to the logical lifetime of the strings in your program. This while when using std::string for such strings, the spare caps may linger in process memory for quite some time, and may end up in uninitialized memory allocated to other parts of your program, what from a least authority perspective is a bad idea. It is strongly suggested that when your programs handles sparse caps outside of the direct RumpelTree++ context, it use rumpelstiltskin::string to store them.
 </p>
 <p>
@@ -131,7 +131,7 @@ The server itself needs one or two secrets:
 </ul>
 Its important to note that the cloud secret is the secret used to get from an attenuated authority cap to a storage key. 
 Giving clients access to the cloud key, together with giving them read-only access to storage-key indexed encrypted serialized node storage,
-could allow client side decryption to be implemented, potentially ofloading the server (or file-system) from its decryption tasks and thus 
+could allow client side decryption to be implemented, potentially offloading the server (or file-system) from its decryption tasks and thus 
 contributing to better scalability. By default no cloud secret will be used, and read-only access to storage-key indexed encrypted serialized 
 node storage would allow anyone with a valid sparse cap decryption access to that node.<br><br>RumpelTree++ offers a convenience function for
 creating a secret for use by the server part of the library. 
@@ -142,7 +142,7 @@ creating a secret for use by the server part of the library.
 </code></pre>
 </p>
 <p>
-This function should only be used at first use of your server or during installation. This secret should be stored in a place where only your server of file-system is able to access it with strict access controll allowing your server and only your server to access it during normal system operations. Whenever the server is restarted, the secret should be retreived from this tightly protected file. We can now create a base server object for our server omplementation to use:
+This function should only be used at first use of your server or during installation. This secret should be stored in a place where only your server of file-system is able to access it with strict access control allowing your server and only your server to access it during normal system operations. Whenever the server is restarted, the secret should be retrieved from this tightly protected file. We can now create a base server object for our server implementation to use:
 </p>
 <p>
 <pre><code>auto server=rumpelstiltskin::create_server(secret);
@@ -172,8 +172,7 @@ Once we have a root cap or any cap for that matter, we can get to one of the nod
 <h3>
 <a name="decomposition" class="anchor" href="#decomposition"><span class="octicon octicon-link"></span></a>Decomposition and child nodes.</h3>
 
-<p>Once we have a node object, its possible to get at any of its child nodes using the locally unique name of the child. A node could have one child named 'bob' and an
-other child named 'allice', but no two children named 'bob'. After we get at the child node naed 'bob' we can request the sparsecap to designate that node.</p>
+<p>Once we have a node object, its possible to get at any of its child nodes using the locally unique name of the child. A node could have one child named 'bob' and another child named 'allice', but no two children named 'bob'. After we get at the child node named 'bob' we can request the sparsecap to designate that node.</p>
 </p>
 <p>
 <pre><code>auto childnode=rootnode["bob"];
@@ -186,7 +185,7 @@ auto childcap=childnode.cap();
 
 <p>Next to decomposition and getting at the sparse caps for child nodes, we can also use single attenuation. Its important to note that this single 
 attenuation is deep attenuation. You can use an attenuated authority sparse cap for a parent to gain access to an attenuated authority sparse cap 
-for any of its children. Its also important to not that attenuation of decomposition yields the exact same sparse caps as decomposition of attentuation does.
+for any of its children. Its also important to note that attenuation of decomposition yields the exact same sparse caps as decomposition of attenuation does.
 Getting an attenuated authority sparsecap is done like:</p>
 </p>
 <p>
@@ -198,7 +197,7 @@ auto attenuatedrootcap=attenuatedrootnode.cap();
 <h3>
 <a name="storage" class="anchor" href="#storage"><span class="octicon octicon-link"></span></a>Encrypted storage.</h3>
 
-<p>While we could just make up root node sparse caps or generate them from a password, the actual node's in the DAG need to be persistently stored somewhere, and this storage should probably be done encrypted. For this, RumpelTree++ has the concept of storage objects. Each node can be mapped to a storage object, and this storage objact holds both a storage key designating some kind of location for the encrypted storage of the serialization of the node, and an encryption key that is to be used for encryption and decryption of the serialized node's. Its important to note that neither encryption nor storage are part of the RumpelTree++ functionality. Its up to the application implementing the actual server or file-system to take care of storage and encryption. RumpelTree++ simply provides node encryption keys and file-system friendly storage keys.</p>
+<p>While we could just make up root node sparse caps or generate them from a password, the actual node's in the DAG need to be persistently stored somewhere, and this storage should probably be done encrypted. For this, RumpelTree++ has the concept of storage objects. Each node can be mapped to a storage object, and this storage object holds both a storage key designating some kind of location for the encrypted storage of the serialization of the node, and an encryption key that is to be used for encryption and decryption of the serialized node's. Its important to note that neither encryption nor storage are part of the RumpelTree++ functionality. Its up to the application implementing the actual server or file-system to take care of storage and encryption. RumpelTree++ simply provides node encryption keys and file-system friendly storage keys.</p>
 <p>
 <pre><code>auto rootstorage=rootnode.storage() ;
 auto rawstorage=rumpelstiltskin::string("/var/rumpelstilskinfs/rawdata/") + rootstorage.storage();
@@ -210,8 +209,8 @@ auto cryptokey =rootstorage.crypto_key();
 <a name="cs-usage" class="anchor" href="#cs-usage"><span class="octicon octicon-link"></span></a>Client side usage.</h2>
 
 <p>While its completely possible to only ever use server side operations, there might be scalability issues with doing all operations on a single server.
-To unload the server, there are some operations that can be performed on the client side instead. Attenuation is always possible on the lient side, while 
-enabling decryption is a posibility that a system designer may opt for. To do client side operation, we need to create a client side object first.
+To unload the server, there are some operations that can be performed on the client side instead. Attenuation is always possible on the client side, while 
+enabling decryption is a possibility that a system designer may opt for. To do client side operation, we need to create a client side object first.
 If the server side uses a cloud secret, and if we want to support client side decryption, we shall also need this cloud secret, otherwise we may simply forget about it.</p>
 <p>
 <pre><code>auto client=rumpelstiltskin::create_client(cloudsecret);
@@ -241,7 +240,7 @@ auto cryptokey =rootstorage.crypto_key();
 <a name="cs-caution" class="anchor" href="#cs-caution"><span class="octicon octicon-link"></span></a>A word of caution</h3>
 If reading the above section, you are tempted to consider client side encryption, as the API seems to allow for it, a word of <b>"extreme"</b> caution": In order to do client side encryption, each client would need
 to have read/write access to encrypted node-serialization storage. The most obvious way to implement such a thing would be introducing shared mutable access to a remote
-file system. Its esential to note that while client-side decryption can be a really good concept, client side decryption with the Rumpelstiltskin Tree-graph sparsecap algorithm does not only violate the principle of least authority by introducing shared mutable state, it also opens up a priviledge escalation issue, allowing clients with an attenuated authority sparse cap to gain unattenuated access to the serialized node data. As a result of this its extremely important to convey the fact that <b>"client side encryption combined with RumpelTree++ should be considered the mother of all bad ideas"</b>. 
+file system. It's essential to note that while client-side decryption can be a really good concept, client side decryption with the Rumpelstiltskin Tree-graph sparsecap algorithm does not only violate the principle of least authority by introducing shared mutable state, it also opens up a privilege escalation issue, allowing clients with an attenuated authority sparse cap to gain unattenuated access to the serialized node data. As a result of this its extremely important to convey the fact that <b>"client side encryption combined with RumpelTree++ should be considered the mother of all bad ideas"</b>. 
       </section>
 
     </div>
