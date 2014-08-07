@@ -69,7 +69,6 @@ add_test(tests.cryptokey cryptokeytest)
 add_executable(cryptokeytest2 test_cryptokey2.cpp)
 target_link_libraries(cryptokeytest2 rumpeltree++)
 add_test(tests.cryptokey2 cryptokeytest2)
-add_executable(demo test.cpp)
-target_link_libraries(demo rumpeltree++)
+#This test executable is not meant to be run as part of the regular tests, but should be given to valgrind.
 add_executable(memtest memtest.cpp)
 target_link_libraries(memtest rumpeltree++)
