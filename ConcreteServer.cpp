@@ -74,7 +74,8 @@ namespace rumpelstiltskin {
 
     //Decomposition
     Node ConcreteServer::operator()(Node const *parent, std::string const &child) const {
-        uint8_t const *storagekey = parent->storage().crypto_key(); //Get the parents storage crypto key.
+        auto storage=parent->storage();
+        uint8_t const *storagekey = storage.crypto_key(); //Get the parents storage crypto key.
         CryptoPP::HMAC<CryptoPP::SHA256> hmac(storagekey,32); //Use the key as key for HMAC
         string data = child + "::" +  mMainSecret; //Use the main secret for digest calculation as to disalow dangerous
                                                    //client side decomposition.
@@ -108,6 +109,7 @@ namespace rumpelstiltskin {
     }
     Node ConcreteServer::attenuated(Node const *n) const{
         //Get an attenuated version of this node.
-        return Node(new ConcreteNode("",n->attenuated_cap(),n->storage().path(), n->storage().crypto_key()),this);
+        auto storage=n->storage();
+        return Node(new ConcreteNode("",n->attenuated_cap(),storage.path(), storage.crypto_key()),this);
     }
 }
