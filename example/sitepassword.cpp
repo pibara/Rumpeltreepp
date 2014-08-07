@@ -10,12 +10,13 @@
 #include <pwd.h>
 
 int main(int argc,char **argv) {
-  if (argc < 3) {
-      std::cout << "usage:" << std::endl << "\t" << argv[0] << " <root_cap_pass> <domain>" << std::endl;
+  if (argc < 4) {
+      std::cout << "usage:" << std::endl << "\t" << argv[0] << " <root_cap_pass> <domain> <username>" << std::endl;
       return 1;
   }
   std::string rootcappass=argv[1];
   std::string domain=argv[2];
+  std::string account=argv[3];
   struct passwd *passwdfile_entry = getpwuid(geteuid());
   std::string secstore=std::string(passwdfile_entry->pw_dir) + "/.sitepassword";
   if ( !boost::filesystem::exists(secstore) ) {
@@ -30,10 +31,9 @@ int main(int argc,char **argv) {
   secstorefile.close();
   auto server = rumpelstiltskin::create_server(mysecret);
   auto rootcap = rumpelstiltskin::pass2rootcap(rootcappass);
-  std::cout << rootcappass << " -> " << rootcap << std::endl;
   auto rootnode=server[rootcap];
-  std::cout << rootcap << " => " << rootnode.attenuated_cap() << " !" << std::endl;
   auto domainnode = rootnode[domain];
-  std::cout << domainnode.cap() << std::endl;
+  auto accountnode = domainnode[account];
+  std::cout << accountnode.cap().substr(3,52) << std::endl;
   return 0;
 };
