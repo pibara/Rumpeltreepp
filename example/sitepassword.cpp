@@ -17,23 +17,31 @@ int main(int argc,char **argv) {
   std::string rootcappass=argv[1];
   std::string domain=argv[2];
   std::string account=argv[3];
+  /*Determine where the server secres should be stored*/
   struct passwd *passwdfile_entry = getpwuid(geteuid());
   std::string secstore=std::string(passwdfile_entry->pw_dir) + "/.sitepassword";
+  /*If no secret exists, create a new one*/
   if ( !boost::filesystem::exists(secstore) ) {
     auto secret=rumpelstiltskin::randomsecret();
     std::ofstream newsecstorefile(secstore);
     newsecstorefile << secret;
     newsecstorefile.close();
   }
+  /*Read the server secret from the filesystem*/
   std::ifstream secstorefile(secstore);
   std::string mysecret((std::istreambuf_iterator<char>(secstorefile)),
   std::istreambuf_iterator<char>());
   secstorefile.close();
+  /*Create a server object using the secret*/
   auto server = rumpelstiltskin::create_server(mysecret);
+  /*Use the supplied password to create a root cap/node*/
   auto rootcap = rumpelstiltskin::pass2rootcap(rootcappass);
   auto rootnode=server[rootcap];
+  /*Get a child node using the domain*/
   auto domainnode = rootnode[domain];
+  /*Get a child node of the domain node using the account name */
   auto accountnode = domainnode[account];
+  /*Strip the 'rw-' part from our password*/
   std::cout << accountnode.cap().substr(3,52) << std::endl;
   return 0;
 };
