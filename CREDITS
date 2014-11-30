@@ -1,1 +1,2 @@
 David Barbour : Provided feedback on the original SHA2 based sedigne and sugested use of HMAC<SHA2>
+Christopher Meng : Provided a patch to the cmake config for solid 32/64 bit library paths.
